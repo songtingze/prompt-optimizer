@@ -36,14 +36,6 @@ venv.bak/
 *.swo
 .DS_Store
 
-# 项目特定
-results/
-*.log
-*.json
-*.xlsx
-*.xls
-*.csv
-
 # 临时文件
 *.tmp
 *.temp
