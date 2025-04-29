@@ -103,10 +103,10 @@ prompt-optimizer/
 
 ```bash
 # 使用HTTPS克隆
-git clone https://github.com/your-username/prompt-optimizer.git
+git https://github.com/songtingze/prompt-optimizer.git
 
 # 或使用SSH克隆
-git clone git@github.com:your-username/prompt-optimizer.git
+git clone git@github.com:songtingze/prompt-optimizer.git
 
 # 进入项目目录
 cd prompt-optimizer
