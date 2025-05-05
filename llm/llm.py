@@ -8,16 +8,18 @@ class LLM:
     模型参数配置类，用于加载大模型所需的配置参数。
     """
 
-    def __init__(self, api_key: str, base_url: str, model_name: str):
+    def __init__(self, api_key: str, base_url: str, model_name: str, temperature: float):
         """
         初始化模型参数
 
         :param api_key: api_key
         :param base_url: base_url
         :param model_name: 模型名称
+        :param temperature: 模型temperature
         """
         # self.api_key = api_key
         # self.base_url = base_url
+        self.temperature = temperature
         self.model_name = model_name
         self.client = OpenAI(
             # 若没有配置环境变量，请用百炼API Key将下行替换为：api_key="sk-xxx",
@@ -25,7 +27,7 @@ class LLM:
             base_url=base_url,
         )
 
-    def generate_response(self, prompt: str) -> Tuple[str, int]:
+    async def generate_response(self, prompt: str) -> Tuple[str, int]:
         try:
             response = self.client.chat.completions.create(
                 model=self.model_name,
@@ -34,7 +36,7 @@ class LLM:
                     {'role': 'user', 'content': prompt}
                 ],
                 # max_tokens= kwargs.get("max_tokens", self.model_config["max_tokens"]),
-                # temperature= kwargs.get("temperature", self.model_config["temperature"]),
+                temperature=self.temperature
                 # top_p= kwargs.get("top_p", self.model_config["top_p"]),
                 # result_format= self.model_config["result_format"]
             )
