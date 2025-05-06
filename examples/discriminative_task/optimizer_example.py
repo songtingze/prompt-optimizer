@@ -45,39 +45,33 @@ def test_optimizer():
 
     # 优化和反思的大模型
     optimize_llm_config = LLM_Config(
-        model_name="qwen-plus",
-        api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        model_name="qwq-plus",
+        api_key="sk-2811ce6061aa49399967ab7ba71ce5a2",
         base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"
     )
 
     # 测试数据集的大模型
     test_llm_config = LLM_Config(
-        model_name="qwen2.5-32b-instruct",
-        api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        model_name="qwen2.5-72b-instruct",
+        api_key="sk-2811ce6061aa49399967ab7ba71ce5a2",
         base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"
     )
 
     current_time = datetime.now().strftime("%Y%m%d %H:%M:%S")
 
     initial_prompt = test_prompt.format(
-            current_time=current_time
+        current_time=current_time
     )
 
     # 创建优化器实例
     optimizer = PromptOptimizer(optimize_llm_config=optimize_llm_config, test_llm_config=test_llm_config)
 
+    # 成功经验
+    success_experience = """
+    """
+
     # 优化建议
     optimize_suggestion = '''
-1. 针对模糊时间范围的解析，例如“最近三年”或“近五年”，明确起始时间为当前年份减去指定年数加一，并确保输出格式为YYYY。  
-2. 对于“这些年来”、“这些年”等模糊表达，统一解释为当前年份减去5年，并以年份格式（YYYY）输出。  
-3. 在处理“前年”、“去年”等相对时间词时，结合当前时间动态计算对应的起始时间，避免直接输出错误月份信息。  
-4. 强化对“半年”、“季度”等短时间跨度的语义理解，确保准确提取起始月份并遵循YYYYMM格式输出。  
-5. 优化对“上半年”、“本年度前半段”等具体时间段的解析规则，统一将起始时间设定为当年1月（YYYY01）。  
-6. 对于“自前年以来”的表达，明确识别“前年”为当前年份减2年，并以年份格式（YYYY）输出起始时间。  
-7. 在处理“近几个年度”时，将其默认解释为当前年份减去3年，并以年份格式（YYYY）输出起始时间。  
-8. 对“今年”的查询，统一输出当前年份的一月（YYYY01），避免因月份推算导致歧义。  
-9. 针对“上一季度”的查询，确保正确判断当前季度并回溯至上一季度的起始月份（YYYYMM）。  
-10. 增强对“两年”、“三年”等固定时间跨度的解析能力，确保起始时间计算准确且符合规则要求。
     '''
 
     # 运行优化
@@ -85,7 +79,8 @@ def test_optimizer():
         initial_prompt=initial_prompt,
         test_dataset=test_dataset,
         evaluation_func=example_evaluation_func,
-        optimize_suggestion=None  #若初始提示词，该参数为None
+        success_experience=None,
+        optimize_suggestion=None  # 若初始提示词，该参数为None
     )
 
     print(f"最佳提示词:\n{result['optimize_prompt']}")
