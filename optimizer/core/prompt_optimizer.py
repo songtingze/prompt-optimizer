@@ -169,6 +169,11 @@ class PromptOptimizer:
         total_tokens = 0
         start_time_total = datetime.now()
 
+        # 记录初始提示词的评估信息
+        initial_accuracy = -1.0
+        initial_success_experience = ""
+        initial_optimize_suggestion = ""
+
         if optimize_suggestion is None:
             print("-----------------------开始评估初始提示词--------------------------")
             start_time_initial_evaluate = datetime.now()
@@ -180,6 +185,12 @@ class PromptOptimizer:
 
             end_time_initial_evaluate = datetime.now()
             execution_time = end_time_initial_evaluate - start_time_initial_evaluate
+
+            # 记录初始提示词的评估信息
+            initial_accuracy = accuracy
+            initial_success_experience = success_experience
+            initial_optimize_suggestion= optimize_suggestion
+
             # 记录历史
             history.append({
                 "step": "evaluate_initial_prompt",
@@ -252,5 +263,11 @@ class PromptOptimizer:
             "optimize_prompt": optimize_prompt,
             "history": history,
             "total_tokens": total_tokens,
-            "execution_time": str(execution_time.total_seconds())
+            "execution_time": str(execution_time.total_seconds()),
+            "accuracy": accuracy,
+            "initial_accuracy": initial_accuracy,
+            "success_experience": success_experience,
+            "optimize_suggestion": optimize_suggestion,
+            "initial_success_experience":initial_success_experience,
+            "initial_optimize_suggestion":initial_optimize_suggestion
         }

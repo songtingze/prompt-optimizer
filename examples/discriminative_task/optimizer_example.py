@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 from optimizer.core.prompt_optimizer import PromptOptimizer
@@ -6,6 +7,8 @@ import json
 import pandas as pd
 from llm.llm_config import LLM_Config
 from examples.discriminative_task.prompts.test_prompts import test_prompt
+
+api_key = os.environ.get('API_KEY', '未找到PATH变量')
 
 
 def example_evaluation_func(response: str, test_case: Dict) -> float:
@@ -45,15 +48,15 @@ def test_optimizer():
 
     # 优化和反思的大模型
     optimize_llm_config = LLM_Config(
-        model_name="qwq-plus",
-        api_key="sk-2811ce6061aa49399967ab7ba71ce5a2",
+        model_name="qwen-plus-latest",
+        api_key=api_key,
         base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"
     )
 
     # 测试数据集的大模型
     test_llm_config = LLM_Config(
         model_name="qwen2.5-72b-instruct",
-        api_key="sk-2811ce6061aa49399967ab7ba71ce5a2",
+        api_key=api_key,
         base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"
     )
 
@@ -108,14 +111,14 @@ def read_questions_and_units(file_path: str, sheet_name: str) -> list:
         raise ValueError("Excel 中未找到 '用户问题' 或 '起始时间' 列，请检查表头名称。")
 
     # 定义转换函数
-    # def transform_unit(unit):
-    #     if unit == "年":
-    #         return "0310"
-    #     elif unit == "月":
-    #         return "0307"
-    #     else:
-    #         # 如果有其他单位，这里也可以添加对应转换逻辑或直接返回原值
-    #         return unit
+    def transform_unit(unit):
+        if unit == "年":
+            return "0310"
+        elif unit == "月":
+            return "0307"
+        else:
+            # 如果有其他单位，这里也可以添加对应转换逻辑或直接返回原值
+            return unit
 
     # 使用 apply 将每一行转换为字典，然后转换为 list
     result = df.apply(lambda row: {
