@@ -4,6 +4,7 @@ from typing import Any, List, Optional, Tuple, Dict
 from optimizer.utils import load
 import asyncio
 import tiktoken
+from concurrent.futures import ThreadPoolExecutor
 import random
 from optimizer.prompts.prompt_pool import EVALUATE_PROMPT
 
@@ -12,7 +13,7 @@ class EvaluationUtils:
     def __init__(self, root_path: Path) -> None:
         self.root_path = root_path
 
-    def count_tokens(sample: dict):
+    def count_tokens(self, sample: dict):
         if not sample:
             return 0
         else:
@@ -23,33 +24,36 @@ class EvaluationUtils:
         _, _, qa, _ = load.load_meta_data()
         answers = []
 
-        async def fetch_answer(q: str) -> Dict[str, Any]:
+        # 同步版本的 fetch_answer 函数
+        def fetch_answer(q: str) -> Dict[str, Any]:
             prompt = f"{current_prompt}\n\n{q}"
             try:
-                answer, _ = optimizer.execute_llm.generate_response(prompt)
+                answer, token_count = optimizer.execute_llm.generate_response(prompt)
                 return {"question": q, "answer": answer}
             except Exception as e:
                 return {"question": q, "answer": str(e)}
 
-        # 并发执行examples
-        tasks = [fetch_answer(item["question"]) for item in qa]
-        answers = await asyncio.gather(*tasks)
+        # 提取所有问题
+        questions = [item["question"] for item in qa]
+
+        # 使用线程池并发执行 fetch_answer
+        with ThreadPoolExecutor(max_workers=4) as executor:  # 可根据CPU核心数调整
+            answers = list(executor.map(fetch_answer, questions))
 
         cur_round = optimizer.round
-
         new_data = {"round": cur_round, "answers": answers, "prompt": current_prompt}
-
+        print("new_data:\n", new_data)
         return new_data
 
-    async def evaluate_prompt(
+    def evaluate_prompt(
             self,
             optimizer: Any,
             samples: Optional[dict],
             new_samples: dict,
             path: Path,
-            data: List[dict],
+            # data: List[dict],
             initial: bool = False,
-    ) -> Tuple[bool, dict]:
+    ) -> tuple[bool, Any, str | Any]:
         # evaluator = QuickEvaluate()
         new_token = self.count_tokens(new_samples)
 
@@ -62,13 +66,15 @@ class EvaluationUtils:
             evaluation_results = []
             modify_results = []
 
-            # 并发执行所有评估任务，每个返回一个 (succeed, modification) 元组
-            all_results = await asyncio.gather(
-                *(
-                    self._prompt_evaluate(optimizer, samples=samples, new_samples=new_samples)
-                    for _ in range(EVALUATION_REPETITION)
-                )
-            )
+            def run_sync_evaluate() -> Tuple[bool, Any]:
+                return self._prompt_evaluate(optimizer, samples=samples, new_samples=new_samples)
+
+            # 使用线程池并发执行同步任务
+            with ThreadPoolExecutor(max_workers=4) as executor:
+                all_results = list(executor.map(
+                    lambda _: run_sync_evaluate(),  # 使用 lambda 忽略参数
+                    [None] * EVALUATION_REPETITION
+                ))
 
             # 拆分所有结果为两个部分
             succeeds, modifications = zip(*all_results)
@@ -86,25 +92,23 @@ class EvaluationUtils:
             false_count = evaluation_results.count(False)
             succeed = true_count > false_count
 
-            # 拼接所有 modification 字符串
-            modification_all = ' '.join(modify_results)
+            # 只拼接与最终succeed值一致的modification
+            filtered_modifications = [
+                mod for s, mod in zip(evaluation_results, modify_results) if s == succeed
+            ]
+            modification_all = ' '.join(filtered_modifications)
 
+        # 保存最佳prompt
         if(succeed):
             new_data = optimizer.data_utils.create_result_data(
                 new_samples["round"], new_samples["answers"], new_samples["prompt"], succeed, new_token
             )
-            result_path = optimizer.data_utils.get_results_file_path(path)
-            optimizer.data_utils.save_results(result_path, data)
-
-        data.append(new_data)
-
-        result_path = optimizer.data_utils.get_results_file_path(path)
-
-
+            result_path = optimizer.data_utils.get_best_results_file_path(path)
+            optimizer.data_utils.save_best_results(result_path, new_data)
 
         answers = new_samples["answers"]
 
-        return succeed, answers
+        return succeed, answers, modification_all
 
     def _prompt_evaluate(self, optimizer, samples, new_samples):
         _, requirement, qa, _ = load.load_meta_data()
@@ -120,7 +124,7 @@ class EvaluationUtils:
 
         try:
             # response = await self.llm.responser(request_type=RequestType.EVALUATE, messages=messages)
-            answer, _ = await optimizer.evaluate_llm.generate_response(prompt)
+            answer, _ = optimizer.evaluate_llm.generate_response(prompt)
             choose = extract_content(answer, "choose")
             analyse = extract_content(answer, "analyse")
             modification = extract_content(answer, "modification")
@@ -128,7 +132,7 @@ class EvaluationUtils:
 
         except Exception as e:
             print(e)
-            return False
+            return False, "LLM分析反馈出现错误，请参考人工输入的修改反馈。"
 
 def extract_content(xml_string: str, tag: str) -> Optional[str]:
     pattern = rf"<{tag}>(.*?)</{tag}>"

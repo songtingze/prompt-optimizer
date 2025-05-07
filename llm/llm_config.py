@@ -18,4 +18,4 @@ class LLM_Config:
         self.model_name = model_name
         self.api_key = api_key
         self.base_url = base_url
-        self.temperature: temperature
+        self.temperature = temperature

@@ -8,15 +8,15 @@ def parse_args():
     parser = argparse.ArgumentParser(description="PromptOptimizer CLI")
 
     # LLM parameter
-    parser.add_argument("--opt-model", type=str, default="deepseek-r1-distill-qwen-32b", help="Model for optimization")
+    parser.add_argument("--opt-model", type=str, default="deepseek-r1", help="Model for optimization")
     parser.add_argument("--opt-temp", type=float, default=0.7, help="Temperature for optimization")
-    parser.add_argument("--eval-model", type=str, default="deepseek-r1-distill-qwen-32b", help="Model for evaluation")
+    parser.add_argument("--eval-model", type=str, default="deepseek-r1", help="Model for evaluation")
     parser.add_argument("--eval-temp", type=float, default=0.3, help="Temperature for evaluation")
-    parser.add_argument("--exec-model", type=str, default="deepseek-r1-distill-qwen-32b", help="Model for execution")
+    parser.add_argument("--exec-model", type=str, default="deepseek-r1", help="Model for execution")
     parser.add_argument("--exec-temp", type=float, default=0.4, help="Temperature for execution")
 
     # PromptOptimizer parameter
-    parser.add_argument("--workspace", type=str, default="results", help="Path for optimized output")
+    parser.add_argument("--workspace", type=str, default="../../results", help="Path for optimized output")
     parser.add_argument("--current_round", type=int, default=1, help="Initial round number")
     parser.add_argument("--max-rounds", type=int, default=10, help="Maximum number of rounds")
     parser.add_argument("--template", type=str, default="SummaryCJ.yaml", help="Template file name")
@@ -41,14 +41,16 @@ def create_llm_config_from_yaml(
     - 如果指定了 model_name，则从 models 字段中读取
     - 否则使用全局 llm 字段作为默认配置
     """
+
     if model_name in config.get("models", {}):
         model_config = config["models"][model_name]
+
     else:
         # 使用默认
         model_config = config["llm"]
 
     return LLM_Config(
-        model_name=model_config["model"],
+        model_name=model_name,
         api_key=model_config["api_key"],
         base_url=model_config["base_url"],
         temperature=temperature
@@ -90,8 +92,10 @@ def main():
     #     name=args.name,
     # )
     #
-    # optimizer.optimize()
-
+    rt_llm_feedback, rt_prompt, c_round = optimizer.optimize_first()
+    print(f"+++++++++返回前端接口结果+++round {c_round}++++++")
+    print("返回的大模型优化反思：", rt_llm_feedback)
+    print("返回的当前优化后的prompt", rt_prompt)
 
 if __name__ == "__main__":
     main()

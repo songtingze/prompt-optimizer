@@ -27,7 +27,7 @@ class LLM:
             base_url=base_url,
         )
 
-    async def generate_response(self, prompt: str) -> Tuple[str, int]:
+    def generate_response(self, prompt: str) -> Tuple[str, int]:
         try:
             response = self.client.chat.completions.create(
                 model=self.model_name,

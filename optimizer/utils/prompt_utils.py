@@ -21,9 +21,14 @@ class PromptUtils:
             print((f"Error loading prompt for round {round_number}: {e}"))
             raise
 
-    def write_answers(self, directory: Path, answers: dict, name: str = "answers.txt"):
+    def write_answers(self, directory: Path, success: bool, modification_all: str, answers: dict, name: str = "answers.txt"):
         answers_file = directory / name
         with answers_file.open("w", encoding="utf-8") as file:
+            file.write(f"当前轮次的优化结果为：{success}\n")
+            file.write("\n")
+            file.write(f"当前轮次得到的LLM思考反馈结果为：{modification_all}\n")
+            file.write("\n")
+            file.write("当前轮次得到的最新prompt执行结果为：\n")
             for item in answers:
                 file.write(f"Question:\n{item['question']}\n")
                 file.write(f"Answer:\n{item['answer']}\n")
