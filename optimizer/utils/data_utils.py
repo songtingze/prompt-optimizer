@@ -25,7 +25,6 @@ class DataUtils:
 
             # 直接提取字段，无需处理列表
             self.top_scores = {
-                "round": data.get("round"),
                 "prompt": data.get("prompt", ""),
                 "answers": data.get("answers", [])
             }
@@ -39,9 +38,9 @@ class DataUtils:
 
         return self.top_scores
 
-    def create_result_data(self, round: int, answers: list[dict], prompt: str, succeed: bool, tokens: int) -> dict:
+    def create_result_data(self, answers: list[dict], prompt: str, succeed: bool, tokens: int) -> dict:
         now = datetime.datetime.now()
-        return {"round": round, "answers": answers, "prompt": prompt, "succeed": succeed, "tokens": tokens, "time": now}
+        return {"answers": answers, "prompt": prompt, "succeed": succeed, "tokens": tokens, "time": now}
 
     def get_best_results_file_path(self, prompt_path: Path) -> Path:
         return prompt_path / "best_results.json"

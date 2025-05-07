@@ -1,4 +1,6 @@
 import argparse
+from typing import Tuple
+
 from optimizer.core.prompt_optimizer_fewshot import PromptOptimizer
 from llm.llm_config import LLM_Config
 import yaml
@@ -57,8 +59,24 @@ def create_llm_config_from_yaml(
     )
 
 
-def main():
+# 启动第一轮优化
+def start_optimization(optimizer) -> Tuple[str, str, int, str, bool]:
+
+    rt_llm_feedback, rt_prompt, c_round, fn_answer, success = optimizer.optimize_first()
+
+    return rt_llm_feedback, rt_prompt, c_round, fn_answer, success
+
+
+# 继续优化
+def continue_optimization(optimizer, current_round, user_feedback: str, llm_feedback:str, best_answer, best_prompt) -> Tuple[str, str, int, str, bool]:
+    # 调用下一轮优化
+    llm_feedback, current_prompt, next_round, fn_answer, success = optimizer.optimize_next(current_round, user_feedback, llm_feedback, best_answer, best_prompt)
+
+    return llm_feedback, current_prompt, next_round, fn_answer, success
+
+if __name__ == "__main__":
     args = parse_args()
+
     config = load_config("../../llm/config.yaml")
 
     # 构建 LLM 配置
@@ -77,25 +95,30 @@ def main():
         name=args.name
     )
 
-    # 开始执行prompt优化
-    # result = optimizer.optimize(
-    #     round=args.current_round,
-    #     template=args.template,
-    #     name=args.name
-    # )
+    # 启动第一轮优化
+    llm_feedback, current_prompt, current_round, current_answer, success = start_optimization(optimizer)
 
-    # optimizer = PromptOptimizer(
-    #     optimized_path=args.workspace,
-    #     initial_round=args.initial_round,
-    #     max_rounds=args.max_rounds,
-    #     template=args.template,
-    #     name=args.name,
-    # )
-    #
-    rt_llm_feedback, rt_prompt, c_round = optimizer.optimize_first()
-    print(f"+++++++++返回前端接口结果+++round {c_round}++++++")
-    print("返回的大模型优化反思：", rt_llm_feedback)
-    print("返回的当前优化后的prompt", rt_prompt)
+    print(f"🚩 +++++++++返回前端接口结果+++round: {current_round-1}++++++ 🚩")
+    print("返回的大模型优化反思：", llm_feedback)
+    print("返回的当前优化后的prompt：", current_prompt)
+    print("返回的当前优化后的问题执行结果：", current_answer)
+    print("当前优化是否成功：", success)
+    print("++++++++++++++++++++++++++++++++++++++")
 
-if __name__ == "__main__":
-    main()
+    # 启动优化迭代
+    while True:
+        user_feedback = input("请用户根据上一轮的优化结果，输入你的优化建议（输入 'exit' 退出；没有建议则输入空字符串''）: ")
+        if user_feedback.lower() == "exit":
+            break
+
+        llm_feedback, current_prompt, current_round, current_answer, success = continue_optimization(
+            optimizer, current_round+1, user_feedback, llm_feedback, current_answer, current_prompt)
+
+        print(f"🚩 +++++++++返回前端接口结果+++round: {current_round - 1}++++++ 🚩\n")
+        print("返回的大模型优化反思：", llm_feedback, "\n")
+        print("返回的当前优化后的prompt：", current_prompt, "\n")
+        print("返回的当前优化后的问题执行结果：", current_answer, "\n")
+        print("当前优化是否成功：", success)
+        print("++++++++++++++++++++++++++++++++++++++")
+
+

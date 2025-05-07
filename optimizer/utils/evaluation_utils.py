@@ -40,8 +40,8 @@ class EvaluationUtils:
         with ThreadPoolExecutor(max_workers=4) as executor:  # 可根据CPU核心数调整
             answers = list(executor.map(fetch_answer, questions))
 
-        cur_round = optimizer.round
-        new_data = {"round": cur_round, "answers": answers, "prompt": current_prompt}
+        # cur_round = optimizer.round
+        new_data = {"answers": answers, "prompt": current_prompt}
         print("new_data:\n", new_data)
         return new_data
 
@@ -59,7 +59,7 @@ class EvaluationUtils:
 
         # 如果是第一轮没有最佳历史记录时
         if initial is True:
-            samples = {"round": "0", "answers": "", "prompt": ""}
+            samples = {"answers": "", "prompt": ""}
             _, modification_all = self._prompt_evaluate(optimizer, samples=samples, new_samples=new_samples)
             succeed = True
         else:
@@ -101,7 +101,7 @@ class EvaluationUtils:
         # 保存最佳prompt
         if(succeed):
             new_data = optimizer.data_utils.create_result_data(
-                new_samples["round"], new_samples["answers"], new_samples["prompt"], succeed, new_token
+                new_samples["answers"], new_samples["prompt"], succeed, new_token
             )
             result_path = optimizer.data_utils.get_best_results_file_path(path)
             optimizer.data_utils.save_best_results(result_path, new_data)
