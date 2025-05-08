@@ -145,7 +145,7 @@ npm install
 
 ```bash
 # 启动开发服务器
-npm run dev
+npm run serve
 ```
 
 ### 4. 生产环境构建
