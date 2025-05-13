@@ -25,18 +25,20 @@ class LLM:
             base_url=base_url,
         )
 
-    def generate_response(self, prompt: str) -> Tuple[str, int]:
+    def generate_response(self, messages: list) -> Tuple[str, int]:
+        """
+        调用大模型，生成非流式结果
+        :param messages:
+        :return:
+        """
         try:
             response = self.client.chat.completions.create(
                 model=self.model_name,
                 # 此处以qwen-plus为例，可按需更换模型名称。模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
-                messages=[
-                    {'role': 'user', 'content': prompt}
-                ],
-                # max_tokens= kwargs.get("max_tokens", self.model_config["max_tokens"]),
-                # temperature= kwargs.get("temperature", self.model_config["temperature"]),
-                # top_p= kwargs.get("top_p", self.model_config["top_p"]),
-                # result_format= self.model_config["result_format"]
+                messages=messages,
+                # [
+                #     {'role': 'user', 'content': prompt}
+                # ],
             )
 
             return response.choices[0].message.content, response.usage.total_tokens
@@ -44,21 +46,57 @@ class LLM:
             print(f"Error generating response: {e}")
             return "", 0
 
-    def generate_response_with_system_prompt(self, system_prompt: str, user_prompt: str) -> Tuple[str, int]:
+    def generate_response_stream(self, messages: list) -> Tuple[str, int]:
+        """
+        调用大模型，生成流式结果
+        :param messages:
+        :return:
+        """
+        try:
+            completion = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=messages,
+                stream=True,
+                stream_options={"include_usage": True},
+                # extra_body={"enable_thinking": True},
+            )
+
+            response = ""
+            total_tokens = 0
+            for chunk in completion:
+                if len(chunk.choices) > 0 and chunk.choices[0].finish_reason != "stop":
+                    content = chunk.choices[0].delta.content
+                    response += content
+                    print(content, end='', flush=True)  # 流式打印
+                elif "usage" in chunk and chunk.usage:
+                    total_tokens = chunk.usage.total_tokens
+
+            return response, total_tokens
+        except Exception as e:
+            print(f"Error generating response: {e}")
+            return "", 0
+
+    def generate_response_test_connect(self) -> tuple[bool, str]:
+        """
+        调用大模型，生成非流式结果
+        :param messages:
+        :return:
+        """
         try:
             response = self.client.chat.completions.create(
                 model=self.model_name,
-                messages=[
-                    {'role': 'system', 'content': system_prompt},
-                    {'role': 'user', 'content': user_prompt}
+                # 此处以qwen-plus为例，可按需更换模型名称。模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
+                messages=
+                [
+                    {'role': 'system', 'content': "ping"}
                 ],
-                # max_tokens= kwargs.get("max_tokens", self.model_config["max_tokens"]),
-                # temperature= kwargs.get("temperature", self.model_config["temperature"]),
-                # top_p= kwargs.get("top_p", self.model_config["top_p"]),
-                # result_format= self.model_config["result_format"]
+                max_tokens=1
             )
-
-            return response.choices[0].message.content, response.usage.total_tokens
+            msg = ""
+            if response.choices[0].message.content:
+                return True, msg
+            else:
+                return False, response.error_message
         except Exception as e:
             print(f"Error generating response: {e}")
-            return "", 0
+            return False, str(e)

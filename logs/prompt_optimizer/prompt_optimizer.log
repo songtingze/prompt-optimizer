@@ -1,0 +1,398 @@
+2025-05-13 18:08:57.030 | INFO | a29103cda9844e028f2c49e81748f25a | app.py:request_received:61 | 请求: http://localhost:8000/api/optimize
+2025-05-13 18:08:57.035 | INFO | ec51b6b870d3469f88c32f658cdefb0d | app.py:request_received:61 | 请求: http://localhost:8000/api/optimize
+2025-05-13 18:10:57.274 | INFO | 2e726126494e4d84b589fb5e36f61e54 | app.py:request_received:61 | 请求: http://localhost:8000/api/connect-test
+2025-05-13 18:10:57.276 | INFO | 00c2a5106fc34fae854498eb94cd29de | app.py:request_received:61 | 请求: http://localhost:8000/api/connect-test
+2025-05-13 18:11:09.870 | INFO | 8e808b81e82440a1b829cb3d5742eee6 | app.py:request_received:61 | 请求: http://localhost:8000/api/connect-test
+2025-05-13 18:14:40.150 | INFO | 618e2a8dc2da403399a9ec2d7dc8f36a | app.py:request_received:61 | 请求: http://localhost:8000/discriminative/api/optimize
+2025-05-13 18:14:40.153 | INFO | 00cde4e9584940c0a0f8473b1f02055f | app.py:request_received:61 | 请求: http://localhost:8000/discriminative/api/optimize
+2025-05-13 18:14:40.549 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:optimize:186 | -----------------------开始评估初始提示词--------------------------
+2025-05-13 18:14:41.081 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '帮我分析一下自2021年以来我的薪资变化', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2021'}
+2025-05-13 18:14:41.081 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021
+2025-05-13 18:14:41.081 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:14:41.502 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '查一下从2020年至今我的工资变动情况', 'expected': 2020, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2020'}
+2025-05-13 18:14:41.502 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2020
+2025-05-13 18:14:41.502 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:14:42.667 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '最近三年我的薪酬变化情况', 'expected': 2023, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '根据您的查询，时间范围是三年，因此超过了1年，所以输出格式应为YYYY。\n\n起始时间为：2020（假设当前年份为2023）'}
+2025-05-13 18:14:42.668 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的查询，时间范围是三年，因此超过了1年，所以输出格式应为YYYY。
+
+起始时间为：2020（假设当前年份为2023）
+2025-05-13 18:14:42.668 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:14:43.806 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '统计一下过去四年间我的工资情况', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '根据您的提问，查询的时间范围是四年，因此输出的起始时间为：2019'}
+2025-05-13 18:14:43.806 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的提问，查询的时间范围是四年，因此输出的起始时间为：2019
+2025-05-13 18:14:43.806 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:14:46.657 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '帮我看看近五年来我的薪资状况如何', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '根据您的问题，查询时间为五年以上，因此输出格式为YYYY，结果为2018。请注意，这里的年份是基于当前年份（假设为2023年）往前推五年得出的，实际情况可能需要根据具体分析年份进行调整。'}
+2025-05-13 18:14:46.657 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的问题，查询时间为五年以上，因此输出格式为YYYY，结果为2018。请注意，这里的年份是基于当前年份（假设为2023年）往前推五年得出的，实际情况可能需要根据具体分析年份进行调整。
+2025-05-13 18:14:46.657 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:14:47.173 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '分析一下我自前年以来的薪资情况', 'expected': 2023, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2021'}
+2025-05-13 18:14:47.173 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021
+2025-05-13 18:14:47.174 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:14:48.014 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '最近这五年我的工资变化', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '根据您的问题，查询的时间范围是五年，因此输出的起始时间为：2018'}
+2025-05-13 18:14:48.015 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的问题，查询的时间范围是五年，因此输出的起始时间为：2018
+2025-05-13 18:14:48.015 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:14:49.334 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '对比下我2021年至2024年的工资', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2021-2024年的查询时间范围超过了一年，所以按照要求输出格式为YYYY。\n\n起始时间为：2021'}
+2025-05-13 18:14:49.334 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021-2024年的查询时间范围超过了一年，所以按照要求输出格式为YYYY。
+
+起始时间为：2021
+2025-05-13 18:14:49.334 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:14:53.431 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '计算一下我这几年总共获得了多少工资', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '由于您没有提供具体的起始和结束时间，且提到的是"这几年"，这通常意味着一个不精确的时间段，可能是几年。根据您的描述，我假设这是一个超过一年的时间范围。因此，我需要您提供一个确切的开始年份（YYYY）。如果您能给出具体的开始年份，我会帮助您进一步处理。'}
+2025-05-13 18:14:53.432 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：由于您没有提供具体的起始和结束时间，且提到的是"这几年"，这通常意味着一个不精确的时间段，可能是几年。根据您的描述，我假设这是一个超过一年的时间范围。因此，我需要您提供一个确切的开始年份（YYYY）。如果您能给出具体的开始年份，我会帮助您进一步处理。
+2025-05-13 18:14:53.432 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:14:53.825 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '查一下去年一整年的工资总额', 'expected': 202401, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2022'}
+2025-05-13 18:14:53.825 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2022
+2025-05-13 18:14:53.825 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:14:54.325 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '查一下我这两年工资变化情况', 'expected': 2024, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2021,2022'}
+2025-05-13 18:14:54.325 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021,2022
+2025-05-13 18:14:54.325 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:14:55.762 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '查一下我这些年的薪资', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '由于您的查询没有明确指出具体的时间范围，我无法直接给出 YYYYMM 或 YYYY 的格式。请您提供一个更具体的时间范围，比如“2020年至今的薪资”或“201901到202212的薪资”。这样我可以更好地帮助您。'}
+2025-05-13 18:14:55.762 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：由于您的查询没有明确指出具体的时间范围，我无法直接给出 YYYYMM 或 YYYY 的格式。请您提供一个更具体的时间范围，比如“2020年至今的薪资”或“201901到202212的薪资”。这样我可以更好地帮助您。
+2025-05-13 18:14:55.762 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:14:59.667 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '分析一下从2020年开始到现在的工资变化', 'expected': 2020, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2020'}
+2025-05-13 18:14:59.667 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2020
+2025-05-13 18:14:59.668 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:15:02.041 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '近几个年度内我的薪酬情况', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '根据您的问题，您没有提供具体的起始时间，且询问的是“近几个年度”，这表明查询的时间范围可能超过一年。因此，我无法给出确切的 YYYYMM 或 YYYY 格式的时间。如果您能提供更具体的时间范围，我将能够更好地帮助您。例如，如果您说“过去五年”，那么我可以为您提取出 YYYY 的格式。'}
+2025-05-13 18:15:02.041 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的问题，您没有提供具体的起始时间，且询问的是“近几个年度”，这表明查询的时间范围可能超过一年。因此，我无法给出确切的 YYYYMM 或 YYYY 格式的时间。如果您能提供更具体的时间范围，我将能够更好地帮助您。例如，如果您说“过去五年”，那么我可以为您提取出 YYYY 的格式。
+2025-05-13 18:15:02.041 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:15:02.527 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '2021年以来我的所有工资收入', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2021'}
+2025-05-13 18:15:02.527 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021
+2025-05-13 18:15:02.527 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:15:03.154 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '查询2024年全年工资总额', 'expected': 202401, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2024'}
+2025-05-13 18:15:03.154 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2024
+2025-05-13 18:15:03.155 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:15:03.541 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '从2020年到现在我累计发了多少工资', 'expected': 2020, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2020'}
+2025-05-13 18:15:03.541 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2020
+2025-05-13 18:15:03.541 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:15:04.166 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '我在2023年的总工资收入是多少', 'expected': 202301, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2023'}
+2025-05-13 18:15:04.166 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2023
+2025-05-13 18:15:04.166 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:15:05.011 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '请汇总自2021年以来我获得的所有薪资总额', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2021'}
+2025-05-13 18:15:05.011 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021
+2025-05-13 18:15:05.011 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:15:05.440 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '自2021年起至现在，我的总工资收入为多少', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2021'}
+2025-05-13 18:15:05.440 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021
+2025-05-13 18:15:05.440 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:15:05.915 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '去年我总共收到了多少工资', 'expected': 202401, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2022'}
+2025-05-13 18:15:05.916 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2022
+2025-05-13 18:15:05.916 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:15:06.558 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '今年我总共收到了多少工资', 'expected': 202501, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2023'}
+2025-05-13 18:15:06.558 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2023
+2025-05-13 18:15:06.558 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:15:09.088 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '分析我上年的薪酬变化', 'expected': 202401, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '根据您的问题，您想了解的时间范围是上年，即一年。因此，输出格式应为YYYY。\n\n假设当前年份是2023年，“上年”指的是2022年，所以答案是：\n\n2022'}
+2025-05-13 18:15:09.088 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的问题，您想了解的时间范围是上年，即一年。因此，输出格式应为YYYY。
+
+假设当前年份是2023年，“上年”指的是2022年，所以答案是：
+
+2022
+2025-05-13 18:15:09.090 | INFO | 00cde4e9584940c0a0f8473b1f02055f | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:03.777 | INFO | 1d55710143f44864b71ce61de96f2b45 | app.py:request_received:61 | 请求: http://localhost:8000/discriminative/api/optimize
+2025-05-13 18:18:04.172 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:optimize:186 | -----------------------开始评估初始提示词--------------------------
+2025-05-13 18:18:04.742 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '帮我分析一下自2021年以来我的薪资变化', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2021'}
+2025-05-13 18:18:04.742 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021
+2025-05-13 18:18:04.742 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:18:05.171 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '查一下从2020年至今我的工资变动情况', 'expected': 2020, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2020'}
+2025-05-13 18:18:05.172 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2020
+2025-05-13 18:18:05.172 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:18:08.811 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '最近三年我的薪酬变化情况', 'expected': 2023, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '根据您的查询，时间范围是三年以上，因此输出格式为YYYY。\n\n输出：[当前年份-3]至[当前年份]\n\n例如，如果当前年份是2023，则输出为：2020至2023\n\n但由于需要严格按照YYYY的格式输出，并且考虑到只允许单一值输出的要求，我们只能选择一个代表性的年份。在这种情况下，通常会选择最早的那一年作为代表，即：\n\n输出：2020'}
+2025-05-13 18:18:08.811 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的查询，时间范围是三年以上，因此输出格式为YYYY。
+
+输出：[当前年份-3]至[当前年份]
+
+例如，如果当前年份是2023，则输出为：2020至2023
+
+但由于需要严格按照YYYY的格式输出，并且考虑到只允许单一值输出的要求，我们只能选择一个代表性的年份。在这种情况下，通常会选择最早的那一年作为代表，即：
+
+输出：2020
+2025-05-13 18:18:08.811 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:10.548 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '统计一下过去四年间我的工资情况', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '根据您的问题，查询的时间范围是四年，因此应使用年份作为时间单位。所以输出格式为 YYYY。\n\n由于您询问的是“过去四年”，我们假设当前年份为2023年，则查询的起始时间为 2019 年。\n\n综上所述，输出结果为：2019'}
+2025-05-13 18:18:10.549 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的问题，查询的时间范围是四年，因此应使用年份作为时间单位。所以输出格式为 YYYY。
+
+由于您询问的是“过去四年”，我们假设当前年份为2023年，则查询的起始时间为 2019 年。
+
+综上所述，输出结果为：2019
+2025-05-13 18:18:10.549 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:12.761 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '帮我看看近五年来我的薪资状况如何', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '根据您的询问，查询时间为五年以上，因此输出格式为YYYY，结果为2018。请注意，这里的年份是基于当前年份2023往前推五年，实际情况可能需要根据具体需求进行调整。'}
+2025-05-13 18:18:12.762 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的询问，查询时间为五年以上，因此输出格式为YYYY，结果为2018。请注意，这里的年份是基于当前年份2023往前推五年，实际情况可能需要根据具体需求进行调整。
+2025-05-13 18:18:12.763 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:13.193 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '分析一下我自前年以来的薪资情况', 'expected': 2023, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2021'}
+2025-05-13 18:18:13.194 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021
+2025-05-13 18:18:13.194 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:20.536 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '最近这五年我的工资变化', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '根据您的问题，查询的时间范围是五年，超出了1年的范围，因此输出的格式为YYYY。\n\n由于您没有提供具体的年份，我将假设您指的是从当前年份开始往前推算的五年。以2023年为例，结果将是：\n\n2019, 2020, 2021, 2022, 2023\n\n如果您需要特定的年份，请提供详细信息。'}
+2025-05-13 18:18:20.537 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的问题，查询的时间范围是五年，超出了1年的范围，因此输出的格式为YYYY。
+
+由于您没有提供具体的年份，我将假设您指的是从当前年份开始往前推算的五年。以2023年为例，结果将是：
+
+2019, 2020, 2021, 2022, 2023
+
+如果您需要特定的年份，请提供详细信息。
+2025-05-13 18:18:20.537 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:21.126 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '对比下我2021年至2024年的工资', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2021,2024'}
+2025-05-13 18:18:21.126 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021,2024
+2025-05-13 18:18:21.127 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:24.091 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '计算一下我这几年总共获得了多少工资', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '由于您的问题没有提供具体的年份范围，我只能给出一个通用的回答。如果您想查询的工资时间范围在一年或一年以内，请提供如“202201到202212”的时间范围；如果时间范围超过一年，请提供如“2020到2023”的时间范围。这样我才能够帮助您更好地提取和理解您的查询需求。'}
+2025-05-13 18:18:24.092 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：由于您的问题没有提供具体的年份范围，我只能给出一个通用的回答。如果您想查询的工资时间范围在一年或一年以内，请提供如“202201到202212”的时间范围；如果时间范围超过一年，请提供如“2020到2023”的时间范围。这样我才能够帮助您更好地提取和理解您的查询需求。
+2025-05-13 18:18:24.092 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:24.566 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '查一下去年一整年的工资总额', 'expected': 202401, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2022'}
+2025-05-13 18:18:24.566 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2022
+2025-05-13 18:18:24.566 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:25.963 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '查一下我这两年工资变化情况', 'expected': 2024, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2021,2022'}
+2025-05-13 18:18:25.964 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021,2022
+2025-05-13 18:18:25.964 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:29.124 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '查一下我这些年的薪资', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '由于您的查询没有提供具体的起始和结束时间，并且提到的是“这些年”，这可以指任何时间段，从几个月到几年不等。为了更准确地帮助您，请提供一个具体的起始年份或更明确的时间范围。这样我才能判断是应该使用YYYYMM格式还是YYYY格式来回应您的请求。'}
+2025-05-13 18:18:29.124 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：由于您的查询没有提供具体的起始和结束时间，并且提到的是“这些年”，这可以指任何时间段，从几个月到几年不等。为了更准确地帮助您，请提供一个具体的起始年份或更明确的时间范围。这样我才能判断是应该使用YYYYMM格式还是YYYY格式来回应您的请求。
+2025-05-13 18:18:29.125 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:29.589 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '分析一下从2020年开始到现在的工资变化', 'expected': 2020, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2020'}
+2025-05-13 18:18:29.589 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2020
+2025-05-13 18:18:29.590 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:18:32.478 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '近几个年度内我的薪酬情况', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '根据您的提问，您没有提供具体的起始时间，只提到“近几个年度”。因此，我无法直接给出一个确切的 YYYY 或 YYYYMM 格式的起始时间。如果您能提供更具体的时间范围或起始年份，我将能够更好地帮助您。例如，如果您说“近三年的薪酬情况”，那么我就可以推断出查询时间范围在一年以上，并给出相应的 YYYY 格式起始时间。请补充相关信息。'}
+2025-05-13 18:18:32.478 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的提问，您没有提供具体的起始时间，只提到“近几个年度”。因此，我无法直接给出一个确切的 YYYY 或 YYYYMM 格式的起始时间。如果您能提供更具体的时间范围或起始年份，我将能够更好地帮助您。例如，如果您说“近三年的薪酬情况”，那么我就可以推断出查询时间范围在一年以上，并给出相应的 YYYY 格式起始时间。请补充相关信息。
+2025-05-13 18:18:32.478 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:33.043 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '2021年以来我的所有工资收入', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2021'}
+2025-05-13 18:18:33.043 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021
+2025-05-13 18:18:33.043 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:18:33.580 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '查询2024年全年工资总额', 'expected': 202401, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2024'}
+2025-05-13 18:18:33.581 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2024
+2025-05-13 18:18:33.581 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:34.176 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '从2020年到现在我累计发了多少工资', 'expected': 2020, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2020'}
+2025-05-13 18:18:34.176 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2020
+2025-05-13 18:18:34.176 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:18:34.567 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '我在2023年的总工资收入是多少', 'expected': 202301, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2023'}
+2025-05-13 18:18:34.568 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2023
+2025-05-13 18:18:34.568 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:34.973 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '请汇总自2021年以来我获得的所有薪资总额', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2021'}
+2025-05-13 18:18:34.973 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021
+2025-05-13 18:18:34.973 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:18:35.372 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '自2021年起至现在，我的总工资收入为多少', 'expected': 2021, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2021'}
+2025-05-13 18:18:35.373 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021
+2025-05-13 18:18:35.373 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:18:36.132 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '去年我总共收到了多少工资', 'expected': 202401, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2022'}
+2025-05-13 18:18:36.133 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2022
+2025-05-13 18:18:36.133 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:36.565 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '今年我总共收到了多少工资', 'expected': 202501, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '2023'}
+2025-05-13 18:18:36.566 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2023
+2025-05-13 18:18:36.566 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:18:40.337 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：{'input': '分析我上年的薪酬变化', 'expected': 202401, 'initialPromptResult': '', 'optimizedPromptResult': '', 'output': '根据您的问题“分析我上年的薪酬变化”，可以确定您想要查询的时间范围是去年整年。因此，输出的查询起始时间为：\n\n2022\n\n这里假设当前年份是2023年。如果您有具体的年份需求，请提供进一步的信息。'}
+2025-05-13 18:18:40.337 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的问题“分析我上年的薪酬变化”，可以确定您想要查询的时间范围是去年整年。因此，输出的查询起始时间为：
+
+2022
+
+这里假设当前年份是2023年。如果您有具体的年份需求，请提供进一步的信息。
+2025-05-13 18:18:40.338 | INFO | 1d55710143f44864b71ce61de96f2b45 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:21:30.253 | INFO | 78cbc6d78c804199b9033580814eb597 | app.py:request_received:61 | 请求: http://localhost:8000/discriminative/api/optimize
+2025-05-13 18:21:52.369 | INFO | 78cbc6d78c804199b9033580814eb597 | ...mizer\core\prompt_optimizer.py:optimize:186 | -----------------------开始评估初始提示词--------------------------
+2025-05-13 18:21:55.615 | INFO | 78cbc6d78c804199b9033580814eb597 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：帮我分析一下自2021年以来我的薪资变化
+2025-05-13 18:21:55.615 | INFO | 78cbc6d78c804199b9033580814eb597 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021
+2025-05-13 18:21:55.615 | INFO | 78cbc6d78c804199b9033580814eb597 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:21:57.942 | INFO | 78cbc6d78c804199b9033580814eb597 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：查一下从2020年至今我的工资变动情况
+2025-05-13 18:21:57.942 | INFO | 78cbc6d78c804199b9033580814eb597 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2020
+2025-05-13 18:21:57.942 | INFO | 78cbc6d78c804199b9033580814eb597 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:22:24.478 | INFO | 78cbc6d78c804199b9033580814eb597 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:121 | 测试准确率：2/2 = 1.0
+2025-05-13 18:23:07.268 | INFO | 17b4bbb9abd14d11bfe6e2adff9287d4 | app.py:request_received:61 | 请求: http://localhost:8000/discriminative/api/optimize
+2025-05-13 18:23:07.674 | INFO | 17b4bbb9abd14d11bfe6e2adff9287d4 | ...mizer\core\prompt_optimizer.py:optimize:186 | -----------------------开始评估初始提示词--------------------------
+2025-05-13 18:23:11.212 | INFO | 17b4bbb9abd14d11bfe6e2adff9287d4 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：帮我分析一下自2021年以来我的薪资变化
+2025-05-13 18:23:11.212 | INFO | 17b4bbb9abd14d11bfe6e2adff9287d4 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021
+2025-05-13 18:23:11.212 | INFO | 17b4bbb9abd14d11bfe6e2adff9287d4 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:23:11.729 | INFO | 17b4bbb9abd14d11bfe6e2adff9287d4 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：查一下从2020年至今我的工资变动情况
+2025-05-13 18:23:11.729 | INFO | 17b4bbb9abd14d11bfe6e2adff9287d4 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2020
+2025-05-13 18:23:11.730 | INFO | 17b4bbb9abd14d11bfe6e2adff9287d4 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:23:11.730 | INFO | 17b4bbb9abd14d11bfe6e2adff9287d4 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:121 | 测试准确率：2/2 = 1.0
+2025-05-13 18:24:03.773 | INFO | e620ac16ed40454ba2dc580895624a43 | app.py:request_received:61 | 请求: http://localhost:8000/discriminative/api/optimize
+2025-05-13 18:24:04.179 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:optimize:186 | -----------------------开始评估初始提示词--------------------------
+2025-05-13 18:24:05.011 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：统计一下过去四年间我的工资情况
+2025-05-13 18:24:05.012 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的问题，查询的时间范围是四年，因此输出的起始时间为：2019
+2025-05-13 18:24:05.012 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:24:06.903 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：帮我看看近五年来我的薪资状况如何
+2025-05-13 18:24:06.903 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的问题，查询的时间范围是五年，超过了1年，因此输出的格式为YYYY。
+
+由于您询问的是“近五年”，我们可以假设当前年份是2023年，那么开始的时间就是2018年。
+
+所以，输出为：2018
+2025-05-13 18:24:06.903 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:24:07.405 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：分析一下我自前年以来的薪资情况
+2025-05-13 18:24:07.405 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021
+2025-05-13 18:24:07.406 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:24:10.383 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：最近这五年我的工资变化
+2025-05-13 18:24:10.383 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：根据您的提问，您想查询的时间范围是五年以上，因此按照规则，我将时间格式化为年份。您的查询起始时间为当前年份减去5年，即：`YYYY-5`。由于不知道具体的当前年份，我用YYYY来表示，请您替换为实际年份并减去5。格式为：`YYYY-5`。若以2023为例，则为2018。所以标准化后的答案为：2018。但是请注意，需要将`YYYY-5`替换为具体年份减5的结果。
+2025-05-13 18:24:10.383 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:24:10.383 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:121 | 测试准确率：0/4 = 0.0
+2025-05-13 18:24:32.312 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:143 | 反思结果：
+<反思过程>
+步骤一：分析测试结果正向数据
+测试结果中没有正向数据，所有数据均未达到预期效果。
+
+步骤二：分析测试结果负向数据
+1. 归类失败原因：
+   - 时间计算错误：模型在处理"过去四年"、"近五年"等相对时间时，未能正确推算起始年份。
+   - 格式判断失误：对于时间范围的判断标准执行不准确，导致输出格式不符合预期。
+   - 当前时间理解偏差：模型没有意识到应该使用当前时间作为基准进行计算。
+2. 原因分析：
+   - 提示词缺乏对如何计算相对时间的具体指导
+   - 没有明确告知模型当前时间（2025年）
+   - 对于"一年以上"和"一年及以内"的边界处理不够清晰
+3. 优化建议：
+   - 明确告知模型当前时间是2025年
+   - 增加对相对时间计算的详细说明
+   - 提供具体的输入输出示例
+
+步骤三：分析输出格式要求
+1. 输出格式存在明显误解：
+   - 模型有时输出解释性文本而非直接的时间值
+   - 时间计算结果虽然逻辑上似乎合理，但与预期不符
+2. 正确格式要求应为：
+   - 纯数字格式，不带任何解释性文字
+   - 能够正确区分一年以上（YYYY）和一年以内（YYYYMM）的情况
+   - 对于包含"以来"等模糊时间描述的输入，能够根据当前时间正确推算起始时间
+
+步骤四：特殊情况考虑
+1. 相对时间计算问题普遍存在
+2. 需要特别提醒模型当前时间是2025年，并明确相对时间计算规则
+</反思过程>
+
+<成功经验>
+无
+</成功经验>
+
+<优化建议>
+1. 在提示词中明确给出当前时间为2025年5月13日
+2. 增加对相对时间计算的详细说明："当遇到'过去X年'、'近X年'等表述时，请将当前年份减去X得到起始年份；当遇到'自前年以来'、'从去年开始'等表述时，起始年份为当前年份减1"
+3. 增加格式要求说明："只需输出计算结果，不要包含任何解释性文字"
+4. 增加优秀示例：
+
+| 用户输入 | 输出 |
+|----------|------|
+| 统计一下过去四年间我的工资情况 | 2021 |
+| 帮我看看近五年来我的薪资状况如何 | 2020 |
+| 分析一下我自前年以来的薪资情况 | 2024 |
+| 最近这五年我的工资变化 | 2020 |
+
+输出格式要求：纯数字格式，当时间范围超过一年时输出YYYY格式，不超过一年时输出YYYYMM格式，不需要任何解释性文字。
+
+特殊提醒：当处理包含相对时间的查询时，请始终以2025年为当前年份进行计算。
+</优化建议>
+2025-05-13 18:24:32.312 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:optimize:221 | -----------------------初始提示词评估结束,时长0:00:28.132110--------------------------
+2025-05-13 18:24:32.312 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:optimize:224 | -----------------------开始优化提示词--------------------------
+2025-05-13 18:24:48.420 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:optimize_prompt:60 | 优化结果：n<优化过程>
+步骤一：按照模板改写。原始提示词未使用结构化模板，因此需要根据提示词模板进行结构化重构。原始提示词主要描述了提取查询起始时间的需求和输出格式规则。
+
+步骤二：参考优化建议。结合优化建议中提到的"明确当前时间为2025年5月13日"、"增加对相对时间计算的详细说明"、"增加格式要求说明"等内容，对prompt_v1进行了补充完善。
+
+步骤三：总结输出格式要求。从数据集中观察到预期输出为纯数字格式，且与时间范围相关（超过一年用YYYY，不超过一年用YYYYMM），同时需严格避免解释性文字。
+
+步骤四：控制示例数量。原始提示词提供的优化建议中包含4个示例，未超出6个限制，因此无需筛选。
+
+</优化过程>
+
+<新提示词>
+## **Role 角色**
+
+- 专业身份：日期解析专家
+
+- 专业技能：准确理解用户输入中的时间范围并按指定格式提取起始时间
+
+## **Objective 目标**
+
+- 核心输出：纯数字格式的时间起始值
+
+- 核心任务：根据用户输入判断查询时间范围是否超过一年，并以特定格式返回查询起始时间
+
+## **Key Constraints 关键约束**
+
+- 当前时间为2025年5月13日
+
+- 遇到"过去X年"、"近X年"等表述时，将当前年份减去X得到起始年份
+
+- 遇到"自前年以来"、"从去年开始"等表述时，起始年份为当前年份减1
+
+- 查询时间范围在一年以上，输出格式为YYYY；在一年及一年以内，输出格式为YYYYMM
+
+- 只需输出计算结果，不要包含任何解释性文字
+
+## **Output Format 输出格式**
+
+- 纯数字格式
+
+- 超过一年输出YYYY格式，不超过一年输出YYYYMM格式
+
+- 示例：
+| 用户输入 | 输出 |
+|----------|------|
+| 统计一下过去四年间我的工资情况 | 2021 |
+| 帮我看看近五年来我的薪资状况如何 | 2020 |
+| 分析一下我自前年以来的薪资情况 | 2024 |
+| 最近这五年我的工资变化 | 2020 |
+
+## **Examples 示例（可选但强烈建议）**
+
+- 优秀示例：
+| 用户输入 | 输出 |
+|----------|------|
+| 统计一下过去四年间我的工资情况 | 2021 |
+| 帮我看看近五年来我的薪资状况如何 | 2020 |
+| 分析一下我自前年以来的薪资情况 | 2024 |
+| 最近这五年我的工资变化 | 2020 |
+</新提示词>
+2025-05-13 18:24:48.420 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:optimize:235 | -----------------------提示词优化结束,时长0:00:16.107731--------------------------
+2025-05-13 18:24:48.421 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:optimize:236 | -----------------------开始评估优化提示词--------------------------
+2025-05-13 18:24:49.099 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：统计一下过去四年间我的工资情况
+2025-05-13 18:24:49.099 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2021
+2025-05-13 18:24:49.099 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：1.0
+2025-05-13 18:24:49.523 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：帮我看看近五年来我的薪资状况如何
+2025-05-13 18:24:49.523 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2020
+2025-05-13 18:24:49.523 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:24:49.975 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：分析一下我自前年以来的薪资情况
+2025-05-13 18:24:49.975 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2024
+2025-05-13 18:24:49.975 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:24:50.665 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:110 | 用户问题：最近这五年我的工资变化
+2025-05-13 18:24:50.665 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:111 | 生成结果：2020
+2025-05-13 18:24:50.665 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:112 | 分数：0.0
+2025-05-13 18:24:50.665 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:121 | 测试准确率：1/4 = 0.25
+2025-05-13 18:25:11.210 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:evaluate_reflect_prompt:143 | 反思结果：
+<反思过程>
+步骤一：分析测试结果正向数据。唯一一条测试成功的案例是“统计一下过去四年间我的工资情况”，其输出为2021，与预期相符。这表明原始提示词在处理“过去X年”类表述时逻辑基本正确，能准确根据当前时间（2025年）计算出起始年份（2025 - 4 = 2021）。因此可以总结出成功经验：当用户输入中明确包含“过去X年”等标准表达时，模型能够正确理解并执行年份减法运算。
+
+步骤二：分析测试结果负向数据。
+1. 对测试失败的数据进行归类：
+   - 类别一：“近X年”类表述（如“帮我看看近五年来我的薪资状况如何”、“最近这五年我的工资变化”）
+   - 类别二：“自前年以来”类表述（如“分析一下我自前年以来的薪资情况”）
+
+2. 针对每个类别分析原因：
+   - 类别一中的两个例子均期望输出2021（2025 - 5），但模型输出了2020，说明模型将“近五年”和“最近五年”理解成了“过去五年”，即直接用当前年份减去X年。这反映出提示词中没有明确区分“近X年”与“过去X年”的语义差异，导致模型混淆了两种表达方式。
+   - 类别二中，“自前年以来”应理解为从2024年往前一年（即2023年），但模型输出了2024，说明模型误将“前年”理解为“去年”，从而导致起始年份错误。这反映出提示词中对“前年”相关表述的定义不够清晰，模型未能正确识别“前年”是指两年前。
+
+3. 改进建议：
+   - 明确区分“过去X年”与“近X年”的处理逻辑，前者应严格按当前年份减X，而后者可能需要考虑是否包括当前年份。
+   - 明确“前年”的定义为“两年前”，而非“去年”。
+
+步骤三：分析输出格式要求。
+对比output和expected发现，模型输出格式上未出现问题（均为纯数字），但在数值上存在偏差。因此输出格式本身不是问题，无需调整。
+
+步骤四：考虑特殊情况。
+该任务涉及相对时间的理解和计算，当前时间为2025年5月13日，应在提示词中明确提及以避免歧义。
+</反思过程>
+
+<成功经验>
+1. 当用户输入使用“过去X年”这类标准表达时，模型能正确执行年份减法运算，输出正确的YYYY格式。
+2. 模型具备基础的时间范围判断能力，能够在超过一年时输出YYYY格式，在一年内输出YYYYMM格式。
+</成功经验>
+
+<优化建议>
+1. 明确区分“过去X年”与“近X年”或“最近X年”的语义差异，规定“近X年”或“最近X年”应包括当前年份，起始年份为当前年份减X+1。例如“近五年”应为2025 - 5 + 1 = 2021。
+2. 明确“前年”指代为“两年前”，即当前年份减2；“自前年以来”应表示从2023年开始。
+3. 增加优秀示例，帮助模型更好理解不同表达方式下的处理逻辑：
+
+| 用户输入 | 输出 |
+|----------|------|
+| 帮我看看近五年来我的薪资状况如何 | 2021 |
+| 分析一下我自前年以来的薪资情况 | 2023 |
+| 最近这五年我的工资变化 | 2021 |
+
+4. 在提示词中明确指出当前时间为2025年5月13日，确保模型在计算过程中不偏离基准时间点。
+
+输出格式要求output_format
+1. 输出必须为纯数字格式。
+2. 超过一年的时间范围输出YYYY格式，不超过一年的时间范围输出YYYYMM格式。
+3. 不需添加任何解释性文字，仅输出计算结果。
+
+特殊提醒special_reminder
+1. 提示词中应明确当前时间为2025年5月13日，以便模型正确计算相对时间。
+</优化建议>
+2025-05-13 18:25:11.211 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:optimize:252 | -----------------------优化提示词评估结束,时长0:00:22.789908--------------------------
+2025-05-13 18:25:11.219 | INFO | e620ac16ed40454ba2dc580895624a43 | ...mizer\core\prompt_optimizer.py:optimize:257 | -----------------------优化结束,时长0:01:07.039997--------------------------
