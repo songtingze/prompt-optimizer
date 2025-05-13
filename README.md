@@ -132,7 +132,6 @@ prompt-optimizer/
 - npm >= 7.0.0
 
 ### 2. 安装依赖
-
 ```bash
 # 进入前端项目目录
 cd frontend
@@ -142,14 +141,12 @@ npm install
 ```
 
 ### 3. 开发环境运行
-
 ```bash
 # 启动开发服务器
 npm run serve
 ```
 
 ### 4. 生产环境构建
-
 ```bash
 # 构建生产版本
 npm run build
@@ -158,7 +155,6 @@ npm run build
 ## 完整项目启动步骤
 
 1. **启动后端服务**
-
 ```bash
 # 进入项目根目录
 cd prompt-optimizer
@@ -176,7 +172,6 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 2. **启动前端服务**
-
 ```bash
 # 新开一个终端，进入前端目录
 cd frontend
@@ -189,7 +184,6 @@ npm run dev
 ```
 
 3. **访问应用**
-
 - 前端页面: http://localhost:5173
 - 后端API文档: http://localhost:8000/docs
 
@@ -202,7 +196,6 @@ npm run dev
 ## 安装教程
 
 ### 1. 克隆仓库
-
 ```bash
 # 使用HTTPS克隆
 git https://github.com/songtingze/prompt-optimizer.git
@@ -215,7 +208,6 @@ cd prompt-optimizer
 ```
 
 ### 2. 创建虚拟环境（推荐）
-
 ```bash
 # 使用conda创建虚拟环境
 conda create --name prompt_optimizer python=3.10
@@ -226,7 +218,6 @@ conda activate prompt_optimizer
 ```
 
 ### 3. 安装依赖
-
 ```bash
 # 安装所有依赖
 pip install -r requirements.txt
@@ -236,7 +227,6 @@ pip install pandas openpyxl requests python-dotenv tqdm
 ```
 
 ### 4. 验证安装
-
 ```bash
 # 运行示例代码
 python examples/discriminative_task/optimizer_example.py

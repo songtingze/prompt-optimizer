@@ -8,6 +8,7 @@ from optimizer.prompts.system_prompts import OPTIMIZATION_SYSTEM_PROMPT, \
 from llm.llm_config import LLM_Config
 from datetime import datetime
 from optimizer.prompts.prompt_template import BROKE_TEMPLATE
+from utils.logger import logger
 
 
 class PromptOptimizer:
@@ -54,9 +55,9 @@ class PromptOptimizer:
         )
 
         messages = [system_message(OPTIMIZATION_SYSTEM_PROMPT), user_message(optimization_prompt)]
-        optimized_result, tokens = self.optimize_llm.generate_response_stream(messages)
+        optimized_result, tokens = self.optimize_llm.generate_response(messages)
         optimized_prompt = self.extract_new_prompt(optimized_result)
-        # print(f"优化结果：\n{optimized_result}")
+        logger.info(f"优化结果：\rn{optimized_result}")
         return optimized_prompt, tokens
 
     def extract_new_prompt(self, text: str) -> str:
@@ -73,7 +74,7 @@ class PromptOptimizer:
             prompt: str,
             test_dataset: List[Dict],
             evaluation_func: Callable[[str, Dict], float]
-    ) -> tuple[list[dict[str, str | float | None | Any]], float | int, str, str, int]:
+    ) -> tuple[float | int, Any, Any, int]:
         # 评估当前提示词
         """评估提示词在测试数据集上的效果"""
         test_results = []
@@ -88,6 +89,8 @@ class PromptOptimizer:
             total_tokens += tokens
             # 使用评估函数计算分数
             score = evaluation_func(response, test_case)
+
+            test_case["output"] = response
 
             if score > 0.7:
                 test_positive_results.append({
@@ -104,9 +107,9 @@ class PromptOptimizer:
                     "score": score
                 })
 
-            print(f"用户问题：{test_case}")
-            print(f"生成结果：{response}")
-            print(f"分数：{score}")
+            logger.info(f"用户问题：{test_case['input']}")
+            logger.info(f"生成结果：{response}")
+            logger.info(f"分数：{score}")
 
             test_results.append({
                 "input": test_case["input"],
@@ -115,8 +118,13 @@ class PromptOptimizer:
                 "score": score
             })
         accuracy = len(test_positive_results) / len(test_results) if test_results else 0
-        print(f"测试准确率：{len(test_positive_results)}/{len(test_results)} = {accuracy}")
+        logger.info(f"测试准确率：{len(test_positive_results)}/{len(test_results)} = {accuracy}")
 
+        # 如果测试准确率达到阈值，则不进行反思
+        if accuracy >= 0.9:
+            return accuracy, "", "", total_tokens
+
+        current_time = datetime.now().strftime("%Y%m%d %H:%M:%S")
         """反思并提出改进建议"""
         # 生成反思提示词
         reflection_prompt = REFLECTION_USER_PROMPT.format(
@@ -124,16 +132,16 @@ class PromptOptimizer:
             test_positive_results=json.dumps(test_positive_results, ensure_ascii=False, indent=2),
             test_negative_results=json.dumps(test_negative_results, ensure_ascii=False, indent=2),
             accuracy=accuracy,
-            threshold=0.9
+            current_time=current_time
         )
 
         messages = [system_message(REFLECTION_SYSTEM_PROMPT), user_message(reflection_prompt)]
-        reflect_result, tokens = self.optimize_llm.generate_response_stream(messages)
+        reflect_result, tokens = self.optimize_llm.generate_response(messages)
         total_tokens += tokens
         result = self.extract_success_experience_and_optimize_suggestion(reflect_result)
 
-        # print(f"反思结果：\n{reflect_result}")
-        return test_negative_results, accuracy, result["success_experience"], result[
+        logger.info(f"反思结果：\n{reflect_result}")
+        return accuracy, result["success_experience"], result[
             "optimize_suggestion"], total_tokens
 
     def extract_success_experience_and_optimize_suggestion(self, text: str) \
@@ -175,10 +183,10 @@ class PromptOptimizer:
         initial_optimize_suggestion = ""
 
         if optimize_suggestion is None:
-            print("-----------------------开始评估初始提示词--------------------------")
+            logger.info("-----------------------开始评估初始提示词--------------------------")
             start_time_initial_evaluate = datetime.now()
             # 评估当前提示词
-            test_nagative_results, accuracy, success_experience, optimize_suggestion, tokens = self.evaluate_reflect_prompt(
+            accuracy, success_experience, optimize_suggestion, tokens = self.evaluate_reflect_prompt(
                 current_prompt, test_dataset, evaluation_func
             )
             total_tokens += tokens
@@ -189,85 +197,73 @@ class PromptOptimizer:
             # 记录初始提示词的评估信息
             initial_accuracy = accuracy
             initial_success_experience = success_experience
-            initial_optimize_suggestion= optimize_suggestion
+            initial_optimize_suggestion = optimize_suggestion
 
-            # 记录历史
-            history.append({
-                "step": "evaluate_initial_prompt",
-                "prompt": current_prompt,
-                "test_nagative_results": test_nagative_results,
-                "success_experience": success_experience,
-                "optimize_suggestion": optimize_suggestion,
-                "accuracy": accuracy,
-                "tokens": tokens,
-                "execution_time": str(execution_time.total_seconds())
-            })
+            # 修改testcase的output的key
+            for test_case in test_dataset:
+                test_case.update(initialPromptResult=test_case.pop("output"))
 
-            print(f"-----------------------初始提示词评估结束,时长{end_time_initial_evaluate - start_time_initial_evaluate}--------------------------")
+            # 如果优化建议为空，认为提示词达到最优
+            if success_experience == "":
+                return {
+                    "optimize_prompt": "",
+                    "history": history,
+                    "total_tokens": total_tokens,
+                    "execution_time": str(execution_time.total_seconds()),
+                    "accuracy": accuracy,
+                    "initial_accuracy": initial_accuracy,
+                    "success_experience": success_experience,
+                    "optimize_suggestion": optimize_suggestion,
+                    "initial_success_experience": initial_success_experience,
+                    "initial_optimize_suggestion": initial_optimize_suggestion
+                }
 
-        print("-----------------------开始优化提示词--------------------------")
+            logger.info(
+                f"-----------------------初始提示词评估结束,时长{end_time_initial_evaluate - start_time_initial_evaluate}--------------------------")
+
+        logger.info("-----------------------开始优化提示词--------------------------")
         start_time_optimize = datetime.now()
         # 根据优化建议优化提示词
-        optimize_prompt, tokens = self.optimize_prompt(current_prompt, success_experience, optimize_suggestion, test_dataset)
+        optimize_prompt, tokens = self.optimize_prompt(current_prompt, success_experience, optimize_suggestion,
+                                                       test_dataset)
         total_tokens += tokens
         current_prompt = optimize_prompt
 
         end_time_optimize = datetime.now()
         execution_time = end_time_optimize - start_time_optimize
-        # 记录历史
-        history.append({
-            "step": "optimize_prompt",
-            "optimize_prompt": optimize_prompt,
-            "tokens": tokens,
-            "execution_time": str(execution_time.total_seconds())
-        })
-        print(f"-----------------------提示词优化结束,时长{end_time_optimize - start_time_optimize}--------------------------")
-        print("-----------------------开始评估优化提示词--------------------------")
+
+        logger.info(f"-----------------------提示词优化结束,时长{execution_time}--------------------------")
+        logger.info("-----------------------开始评估优化提示词--------------------------")
 
         start_time_evaluate = datetime.now()
         # 评估当前提示词
-        test_nagative_results, accuracy, success_experience, optimize_suggestion, tokens = self.evaluate_reflect_prompt(
+        accuracy, success_experience, optimize_suggestion, tokens = self.evaluate_reflect_prompt(
             current_prompt, test_dataset, evaluation_func
         )
         total_tokens += tokens
 
+        # 修改testcase的output的key
+        for test_case in test_dataset:
+            test_case.update(optimizedPromptResult=test_case.pop("output"))
+
         end_time_evaluate = datetime.now()
         execution_time = end_time_evaluate - start_time_evaluate
-        # 记录历史
-        history.append({
-            "step": "evaluate_prompt",
-            "prompt": current_prompt,
-            "test_nagative_results": test_nagative_results,
-            "optimize_suggestion": optimize_suggestion,
-            "accuracy": accuracy,
-            "tokens": tokens,
-            "execution_time": str(execution_time.total_seconds())
-        })
 
-        print(f"-----------------------优化提示词评估结束,时长{end_time_evaluate - start_time_evaluate}--------------------------")
+        logger.info(f"-----------------------优化提示词评估结束,时长{execution_time}--------------------------")
 
         end_time_total = datetime.now()
         execution_time = end_time_total - start_time_total
-        history.append({
-            "step": "optimize_finish",
-            "prompt": current_prompt,
-            "success_experience":success_experience,
-            "optimize_suggestion": optimize_suggestion,
-            "accuracy": accuracy,
-            "tokens": total_tokens,
-            "execution_time": str(execution_time.total_seconds())
-        })
-        print(f"-----------------------优化结束,时长{end_time_total - start_time_total}--------------------------")
+
+        logger.info(f"-----------------------优化结束,时长{execution_time}--------------------------")
         execution_time = end_time_total - start_time_total
         return {
             "optimize_prompt": optimize_prompt,
-            "history": history,
             "total_tokens": total_tokens,
             "execution_time": str(execution_time.total_seconds()),
             "accuracy": accuracy,
             "initial_accuracy": initial_accuracy,
             "success_experience": success_experience,
             "optimize_suggestion": optimize_suggestion,
-            "initial_success_experience":initial_success_experience,
-            "initial_optimize_suggestion":initial_optimize_suggestion
+            "initial_success_experience": initial_success_experience,
+            "initial_optimize_suggestion": initial_optimize_suggestion
         }
