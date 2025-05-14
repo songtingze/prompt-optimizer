@@ -5,6 +5,7 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 import random
 from optimizer.prompts.prompt_pool import EVALUATE_PROMPT
+from utils.logger import logger
 
 EVALUATION_REPETITION = 3
 
@@ -48,7 +49,7 @@ class EvaluationUtils:
 
         # cur_round = optimizer.round
         new_data = {"answers": answers, "prompt": current_prompt}
-        print("new_data:\n", new_data)
+        logger.info("new_data:\n", new_data)
         return new_data
 
     def evaluate_prompt(
@@ -92,9 +93,9 @@ class EvaluationUtils:
             analyse_results.extend(analyse_all)
 
             # 输出调试信息
-            print(f"Evaluation Results: {evaluation_results}")
-            print(f"Modification Results: {modify_results}")
-            print(f"analyse Results: {analyse_results}")
+            logger.info(f"Evaluation Results: {evaluation_results}")
+            logger.info(f"Modification Results: {modify_results}")
+            logger.info(f"analyse Results: {analyse_results}")
 
             # 计算最终的 succeed 值
             true_count = evaluation_results.count(True)
@@ -150,7 +151,7 @@ class EvaluationUtils:
             return choose == "A" if is_swapped else choose == "B", modification, analyse
 
         except Exception as e:
-            print(e)
+            logger.error(e)
             return False, "LLM分析反馈出现错误，请参考人工输入的修改反馈。", "LLM错误分析出现错误。"
 
 

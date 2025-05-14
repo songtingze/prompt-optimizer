@@ -80,16 +80,112 @@ prompt-optimizer/
 │   └── prompts/              # 反思和优化的提示词模板
 │       └── system_prompts.py
 ├── llm/                      # LLM接口模块
-│   └── llm_config.py
-    └── llm.py
-├── examples/                 # 示例代码
-│   ├── discriminative_task/  # 判别式任务示例
+│   ├── llm_config.py
+│   └── llm.py
+├── frontend/                 # 前端项目
+│   ├── src/                 # 源代码
+│   ├── public/             # 静态资源
+│   └── package.json        # 项目依赖配置
+├── api/                     # 后端API服务
+│   └── main.py             # FastAPI主程序
+├── examples/                # 示例代码
+│   ├── discriminative_task/ # 判别式任务示例
 │   │   ├── optimizer_example.py
 │   │   └── prompts/
-│   └── generative_task/      # 生成式任务示例
-├── results/                  # 优化结果输出
+│   └── generative_task/     # 生成式任务示例
+├── results/                 # 优化结果输出
 └── README.md
 ```
+
+## 后端API接口
+
+### 1. 优化提示词接口
+
+- **接口地址**: `/api/optimize`
+- **请求方法**: POST
+- **请求参数**:
+  ```json
+  {
+    "initial_prompt": "初始提示词",
+    "success_experience": "成功经验（可选）",
+    "optimize_suggestion": "优化建议（可选）",
+    "test_accuracy": 0.85
+  }
+  ```
+- **响应参数**:
+  ```json
+  {
+    "optimized_prompt": "优化后的提示词",
+    "success_experience": "优化后的成功经验",
+    "optimize_suggestion": "优化后的优化建议",
+    "test_accuracy": 0.92,
+    "execution_time": "执行时间",
+    "total_tokens": "消耗的Token数"
+  }
+  ```
+
+## 前端项目
+
+### 1. 环境要求
+
+- Node.js >= 16.0.0
+- npm >= 7.0.0
+
+### 2. 安装依赖
+```bash
+# 进入前端项目目录
+cd frontend
+
+# 安装依赖
+npm install
+```
+
+### 3. 开发环境运行
+```bash
+# 启动开发服务器
+npm run serve
+```
+
+### 4. 生产环境构建
+```bash
+# 构建生产版本
+npm run build
+```
+
+## 完整项目启动步骤
+
+1. **启动后端服务**
+```bash
+# 进入项目根目录
+cd prompt-optimizer
+
+# 创建并激活虚拟环境
+conda create --name prompt_optimizer python=3.10
+conda activate prompt_optimizer
+
+# 安装后端依赖
+pip install -r requirements.txt
+
+# 启动后端服务
+cd api
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+2. **启动前端服务**
+```bash
+# 新开一个终端，进入前端目录
+cd frontend
+
+# 安装前端依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+```
+
+3. **访问应用**
+- 前端页面: http://localhost:5173
+- 后端API文档: http://localhost:8000/docs
 
 ## 示例
 
@@ -100,7 +196,6 @@ prompt-optimizer/
 ## 安装教程
 
 ### 1. 克隆仓库
-
 ```bash
 # 使用HTTPS克隆
 git https://github.com/songtingze/prompt-optimizer.git
@@ -113,7 +208,6 @@ cd prompt-optimizer
 ```
 
 ### 2. 创建虚拟环境（推荐）
-
 ```bash
 # 使用conda创建虚拟环境
 conda create --name prompt_optimizer python=3.10
@@ -124,7 +218,6 @@ conda activate prompt_optimizer
 ```
 
 ### 3. 安装依赖
-
 ```bash
 # 安装所有依赖
 pip install -r requirements.txt
@@ -134,7 +227,6 @@ pip install pandas openpyxl requests python-dotenv tqdm
 ```
 
 ### 4. 验证安装
-
 ```bash
 # 运行示例代码
 python examples/discriminative_task/optimizer_example.py

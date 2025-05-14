@@ -1,8 +1,8 @@
-from llm.llm import LLM
+from llm.llm_t import LLM
 from llm.llm_config import LLM_Config
 from optimizer.utils.evaluation_utils import extract_content, list_to_markdown, EvaluationUtils
 from optimizer.prompts.prompt_pool import PROMPT_OPTIMIZE_PROMPT
-
+from utils.logger import logger
 
 # from optimizer.prompts.prompt_template import BROKE_TEMPLATE
 
@@ -102,7 +102,7 @@ class PromptOptimizer:
     def _optimize_prompt(self, modification_all, anaysis_all, answer, current_prompt, qa_list):
         new_prompt = self._generate_optimized_prompt(modification_all, anaysis_all, answer, current_prompt, qa_list)
         self.prompt = new_prompt
-        print(f"\n New Prompt: {new_prompt}\n")
+        logger.info(f"\n New Prompt: {new_prompt}\n")
         return new_prompt
 
         # # 保存优化后prompt
@@ -112,12 +112,12 @@ class PromptOptimizer:
     def show_final_result(self, success, new_samples):
         # best_round = self.data_utils.get_best_round()
 
-        print("\n" + "=" * 50)
-        print("\n🏆 OPTIMIZATION COMPLETED - FINAL RESULTS 🏆\n")
-        print(f"\n Optimization: {'✅ SUCCESS' if success else '❌ FAILED'}\n")
-        print(f"\n✨ Final Optimized Prompt:\n{new_samples['prompt']}")
-        print(f"\n🎯 According Answer:\n{new_samples['answers']}")
-        print("\n" + "=" * 50 + "\n")
+        logger.info("\n" + "=" * 50)
+        logger.info("\n🏆 OPTIMIZATION COMPLETED - FINAL RESULTS 🏆\n")
+        logger.info(f"\n Optimization: {'✅ SUCCESS' if success else '❌ FAILED'}\n")
+        logger.info(f"\n✨ Final Optimized Prompt:\n{new_samples['prompt']}")
+        logger.info(f"\n🎯 According Answer:\n{new_samples['answers']}")
+        logger.info("\n" + "=" * 50 + "\n")
 
     # def _optimize_prompt_next(self, llm_feedback, human_feedback, answer, best_prompt):
     #     new_prompt = self._generate_optimized_prompt(modification_all, anaysis_all, answer, best_prompt)
@@ -130,14 +130,14 @@ class PromptOptimizer:
     def _generate_optimized_prompt(self, modification_all, anaysis_all, answer, current_prompt, qa):
         # _, requirements, qa, count = load.load_meta_data()
 
-        print(f"\n🚀OPTIMIZATION STARTING 🚀\n")
-        print(f"\nSelecting prompt and advancing to the iteration phase\n")
+        logger.info(f"\n🚀OPTIMIZATION STARTING 🚀\n")
+        logger.info(f"\nSelecting prompt and advancing to the iteration phase\n")
 
         golden_answer = list_to_markdown(qa)
         best_answer = list_to_markdown(answer)
 
         # 第一轮优化不补充用户反馈
-        print(f"Feedback: {anaysis_all}\n{modification_all}")
+        logger.info(f"Feedback: {anaysis_all}\n\n{modification_all}")
 
         # optimize_prompt = PROMPT_OPTIMIZE_PROMPT.format(
         #     prompt=current_prompt,
@@ -178,8 +178,8 @@ class PromptOptimizer:
         #     # directory = self.prompt_utils.create_round_directory(self.root_path, self.round)
         #     # current_prompt = self.prompt_utils.load_prompt(self.round, directory)
         #     current_prompt = self.prompt
-        print("\n⚡ RUNNING OPTIMIZED PROMPT ⚡\n")
-        print(f"\n Current_prompt:{current_prompt}\n")
+        logger.info("\n⚡ RUNNING OPTIMIZED PROMPT ⚡\n")
+        logger.info(f"\n Current_prompt:{current_prompt}\n")
 
         # 执行prompt
         # new_samples = self._run_async_execute(current_prompt)
@@ -187,7 +187,7 @@ class PromptOptimizer:
         return new_samples
 
     def _evaluate_prompt(self, new_samples, last_samples, qa_list, initial=False):
-        print("\n📊 EVALUATING OPTIMIZED PROMPT 📊\n")
+        logger.info("\n📊 EVALUATING OPTIMIZED PROMPT 📊\n")
         # 获取目前最好的结果
         # best_samples = self.data_utils.get_best_round()
         # 用最新结果和上一次结果进行比较评估
