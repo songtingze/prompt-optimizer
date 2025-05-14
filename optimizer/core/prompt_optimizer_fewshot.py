@@ -1,17 +1,10 @@
-import asyncio
-from typing import Dict, List, Optional, Tuple, Callable, Any
-import json
-from pathlib import Path
 from llm.llm import LLM
-from optimizer.prompts.system_prompts import REFLECTION_TEMPLATE1, OPTIMIZATION_TEMPLATE1
 from llm.llm_config import LLM_Config
-from datetime import datetime
-from optimizer.utils import load
-from optimizer.utils.prompt_utils import PromptUtils
-from optimizer.utils.evaluation_utils import EvaluationUtils, extract_content
-from optimizer.utils.data_utils import DataUtils
+from optimizer.utils.evaluation_utils import extract_content, list_to_markdown, EvaluationUtils
 from optimizer.prompts.prompt_pool import PROMPT_OPTIMIZE_PROMPT
 
+
+# from optimizer.prompts.prompt_template import BROKE_TEMPLATE
 
 class PromptOptimizer:
     def __init__(
@@ -19,10 +12,10 @@ class PromptOptimizer:
             optimize_llm_config: LLM_Config,
             evaluate_llm_config: LLM_Config,
             execute_llm_config: LLM_Config,
-            rounds: int,
-            optimized_path: str = None,
-            name: str = "",
-            template: str = ""
+            # rounds: int,
+            # optimized_path: str = None,
+            # name: str = "",
+            # template: str = ""
     ):
         """
         初始化提示词优化器
@@ -55,157 +48,154 @@ class PromptOptimizer:
             temperature=execute_llm_config.temperature
         )
 
-        self.name = name
-        self.root_path = Path(optimized_path) / self.name
+        # self.name = name
+        # self.root_path = Path(optimized_path) / self.name
         self.top_scores = []
-        self.round = rounds
+        # self.round = rounds
         # self.max_rounds = max_rounds
-        self.template = template
-        self.prompt_utils = PromptUtils(self.root_path)
-        self.evaluation_utils = EvaluationUtils(self.root_path)
-        self.data_utils = DataUtils(self.root_path)
+        # self.template = template
+        # self.prompt_utils = PromptUtils(self.root_path)
+        self.evaluation_utils = EvaluationUtils()
+        # self.data_utils = DataUtils(self.root_path)
         # self.evaluation_utils = EvaluationUtils(self.root_path)
 
-
-    # 第一轮优化过程
-    def optimize_first(self):
+    # 第一轮优化过程 todo:初始接收问答对
+    def optimize_first(self, current_prompt, qa_list):
         # 2.执行优化后的prompt
-        new_samples = self._execute_prompt(initial=True)
+        new_samples = self._execute_prompt(current_prompt, qa_list)
         # 3.评估并反思
-        llm_feedback, _ = self._evaluate_prompt(new_samples, None, initial=True)
-            # self._run_async_evaluate(new_samples, initial=True)
-        self.round += 1
-        best_samples = self.data_utils.get_best_round()
-        # 1.优化更新prompt
-        self._optimize_prompt_first(llm_feedback, best_samples["answers"], best_samples["prompt"])
+        modification_all, anaysis_all, _ = self._evaluate_prompt(new_samples, None, qa_list, initial=True)
+        # self._run_async_evaluate(new_samples, initial=True)
+        # self.round += 1
+        # best_samples = self.data_utils.get_best_round()
+        # 1.优化更新prompt(基于上一轮的prompt)
+        new_prompt = self._optimize_prompt(modification_all, anaysis_all, new_samples["answers"], new_samples["prompt"],
+                                           qa_list)
         # 2.执行优化后的prompt
-        new_samples = self._execute_prompt()
+        last_samples = new_samples
+        new_samples = self._execute_prompt(new_prompt, qa_list)
         # 3.评估并反思
-        llm_feedback, success = self._evaluate_prompt(new_samples, best_samples)
-        # 结果展示并返回
-        best_round = self.data_utils.get_best_round()
-        self.show_final_result(success, best_round)
-        return llm_feedback, self.prompt, self.round, best_round['answers'], success
+        modification_all, anaysis_all, success = self._evaluate_prompt(new_samples, last_samples, qa_list)
+        # 结果展示并返回最新
+        # best_round = self.data_utils.get_best_round()
+        self.show_final_result(success, new_samples)
+        return modification_all, anaysis_all, new_prompt, new_samples['answers'], success
 
-    # 循环优化过程
-    def optimize_next(self, current_round, user_feedback: str, llm_feedback: str, best_answer, best_prompt):
-        self.round = current_round
+    # 循环优化过程 todo:初始接收问答对
+    def optimize_next(self, modification_all: str, anaysis_all: str, last_answer, last_prompt, qa_list):
+        # self.round = current_round
         # 1.优化更新prompt(使用两个来源反馈+之前的最佳prompt和对应得到的示例答案)
-        self._optimize_prompt_next(llm_feedback, user_feedback, best_answer, best_prompt)
+        new_prompt = self._optimize_prompt(modification_all, anaysis_all, last_answer, last_prompt, qa_list)
         # 2.执行优化后的prompt
-        new_samples = self._execute_prompt()
+        new_samples = self._execute_prompt(new_prompt, qa_list)
         # 3.评估并反思
-        best_samples = {
-            "prompt": best_prompt,
-            "answers": best_answer
+        last_sample = {
+            "prompt": last_prompt,
+            "answers": last_answer
         }
-        llm_feedback, success = self._evaluate_prompt(new_samples, best_samples)
-        # 目前最优结果
-        best_round = self.data_utils.get_best_round()
-        self.show_final_result(success, best_round)
-        return llm_feedback, self.prompt, self.round, best_round['answers'], success
+        modification_all, anaysis_all, success = self._evaluate_prompt(new_samples, last_sample, qa_list)
+        # 目前最新结果
+        # best_round = self.data_utils.get_best_round()
+        self.show_final_result(success, new_samples)
+        return modification_all, anaysis_all, new_prompt, new_samples['answers'], success
 
-    def _optimize_prompt_first(self, llm_feedback, answer, best_prompt):
-        new_prompt = self._generate_optimized_prompt(llm_feedback, "", answer, best_prompt)
+    def _optimize_prompt(self, modification_all, anaysis_all, answer, current_prompt, qa_list):
+        new_prompt = self._generate_optimized_prompt(modification_all, anaysis_all, answer, current_prompt, qa_list)
         self.prompt = new_prompt
-        print(f"\n Prompt: {self.prompt}\n")
+        print(f"\n New Prompt: {new_prompt}\n")
+        return new_prompt
 
-        # 保存优化后prompt
-        directory = self.prompt_utils.create_round_directory(self.root_path, self.round)
-        self.prompt_utils.write_prompt(directory, prompt=self.prompt)
+        # # 保存优化后prompt
+        # directory = self.prompt_utils.create_round_directory(self.root_path, self.round)
+        # self.prompt_utils.write_prompt(directory, prompt=self.prompt)
 
-    def show_final_result(self, success, best_round):
+    def show_final_result(self, success, new_samples):
         # best_round = self.data_utils.get_best_round()
 
         print("\n" + "=" * 50)
         print("\n🏆 OPTIMIZATION COMPLETED - FINAL RESULTS 🏆\n")
         print(f"\n Optimization: {'✅ SUCCESS' if success else '❌ FAILED'}\n")
-        print(f"\n✨ Final Optimized Prompt:\n{best_round['prompt']}")
-        print(f"\n🎯 According Answer:\n{best_round['answers']}")
+        print(f"\n✨ Final Optimized Prompt:\n{new_samples['prompt']}")
+        print(f"\n🎯 According Answer:\n{new_samples['answers']}")
         print("\n" + "=" * 50 + "\n")
 
-    def _optimize_prompt_next(self, llm_feedback, human_feedback, answer, best_prompt):
-        new_prompt = self._generate_optimized_prompt(llm_feedback, human_feedback, answer, best_prompt)
-        self.prompt = new_prompt
+    # def _optimize_prompt_next(self, llm_feedback, human_feedback, answer, best_prompt):
+    #     new_prompt = self._generate_optimized_prompt(modification_all, anaysis_all, answer, best_prompt)
+    #     self.prompt = new_prompt
+    #
+    #     # 保存优化后prompt
+    #     directory = self.prompt_utils.create_round_directory(self.root_path, self.round)
+    #     self.prompt_utils.write_prompt(directory, prompt=self.prompt)
 
-        # 保存优化后prompt
-        directory = self.prompt_utils.create_round_directory(self.root_path, self.round)
-        self.prompt_utils.write_prompt(directory, prompt=self.prompt)
-
-    def _generate_optimized_prompt(self, llm_feedback, human_feedback, answer, best_prompt):
-        _, requirements, qa, count = load.load_meta_data()
+    def _generate_optimized_prompt(self, modification_all, anaysis_all, answer, current_prompt, qa):
+        # _, requirements, qa, count = load.load_meta_data()
 
         print(f"\n🚀OPTIMIZATION STARTING 🚀\n")
         print(f"\nSelecting prompt and advancing to the iteration phase\n")
 
-        golden_answer = self.data_utils.list_to_markdown(qa)
-        best_answer = self.data_utils.list_to_markdown(answer)
+        golden_answer = list_to_markdown(qa)
+        best_answer = list_to_markdown(answer)
 
         # 第一轮优化不补充用户反馈
-        if human_feedback == "":
-            print(f"LLM Modification: {llm_feedback}")
+        print(f"Feedback: {anaysis_all}\n{modification_all}")
 
-            optimize_prompt = PROMPT_OPTIMIZE_PROMPT.format(
-                prompt=best_prompt,
-                answers=best_answer,
-                requirements=requirements,
-                golden_answers=golden_answer,
-                count=count,
-                LLM_feedback=llm_feedback,
-                human_feedback=human_feedback
-            )
-        else:
-            print(f"LLM Modification: {llm_feedback}\n")
-            print(f"Human Modification: {human_feedback}")
-
-            optimize_prompt = PROMPT_OPTIMIZE_PROMPT.format(
-                prompt=best_prompt,
-                answers=best_answer,
-                requirements=requirements,
-                golden_answers=golden_answer,
-                count=count,
-                LLM_feedback=llm_feedback,
-                human_feedback=human_feedback
-            )
+        # optimize_prompt = PROMPT_OPTIMIZE_PROMPT.format(
+        #     prompt=current_prompt,
+        #     answers=best_answer,
+        #     requirements=requirements,
+        #     golden_answers=golden_answer,
+        #     count=count,
+        #     anaysis_all=anaysis_all,
+        #     modification_all=modification_all
+        #     # template=BROKE_TEMPLATE
+        # )
+        optimize_prompt = PROMPT_OPTIMIZE_PROMPT.format(
+            prompt=current_prompt,
+            answers=best_answer,
+            golden_answers=golden_answer,
+            anaysis_all=anaysis_all,
+            modification_all=modification_all,
+            count=""
+            # template=BROKE_TEMPLATE
+        )
 
         response, _ = self.optimize_llm.generate_response(optimize_prompt)
-        prompt = extract_content(response, "prompt")
+        new_prompt = extract_content(response, "prompt")
 
-        return prompt if prompt else ""
+        return new_prompt if new_prompt else ""
 
-    def _execute_prompt(self, initial=False):
-        load.set_file_name(self.template)
-        # 第一轮没有优化后的prompt
-        if initial:
-            # 读取初始化配置模板
-            prompt, _, _, _ = load.load_meta_data()
-            # 初始输入prompt
-            self.prompt = prompt
-            current_prompt = self.prompt
-        else:
-            # 读取上一轮优化后的prompt
-            # directory = self.prompt_utils.create_round_directory(self.root_path, self.round)
-            # current_prompt = self.prompt_utils.load_prompt(self.round, directory)
-            current_prompt = self.prompt
+    def _execute_prompt(self, current_prompt, qa_list):
+        # load.set_file_name(self.template)
+        # # 第一轮没有优化后的prompt
+        # if initial:
+        #     # 读取初始化配置模板
+        #     prompt, _, _, _ = load.load_meta_data()
+        #     # 初始输入prompt
+        #     self.prompt = prompt
+        #     current_prompt = self.prompt
+        # else:
+        #     # 读取上一轮优化后的prompt
+        #     # directory = self.prompt_utils.create_round_directory(self.root_path, self.round)
+        #     # current_prompt = self.prompt_utils.load_prompt(self.round, directory)
+        #     current_prompt = self.prompt
         print("\n⚡ RUNNING OPTIMIZED PROMPT ⚡\n")
         print(f"\n Current_prompt:{current_prompt}\n")
 
         # 执行prompt
         # new_samples = self._run_async_execute(current_prompt)
-        new_samples = self.evaluation_utils.execute_prompt(self, current_prompt)
+        new_samples = self.evaluation_utils.execute_prompt(self, current_prompt, qa_list)
         return new_samples
 
-    def _evaluate_prompt(self, new_samples, best_samples, initial=False):
+    def _evaluate_prompt(self, new_samples, last_samples, qa_list, initial=False):
         print("\n📊 EVALUATING OPTIMIZED PROMPT 📊\n")
         # 获取目前最好的结果
         # best_samples = self.data_utils.get_best_round()
-        # 用最新结果和最好结果进行比较评估
-        success, answers, modification_all = self.evaluation_utils.evaluate_prompt(
-            self, best_samples, new_samples, path=self.root_path, initial=initial
+        # 用最新结果和上一次结果进行比较评估
+        success, modification_all, anaysis_all = self.evaluation_utils.evaluate_prompt(
+            self, last_samples, new_samples, qa_list, initial=initial
         )
         # 保存评估结果（有可能success为false，保存的并不一定为最佳）
-        directory = self.prompt_utils.create_round_directory(self.root_path, self.round)
-        self.prompt_utils.write_answers(directory, success, modification_all, answers=answers)
+        # directory = self.prompt_utils.create_round_directory(self.root_path, self.round)
+        # self.prompt_utils.write_answers(directory, success, modification_all, answers=answers)
 
-        return modification_all, success
-
+        return modification_all, anaysis_all, success

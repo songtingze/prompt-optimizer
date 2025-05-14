@@ -52,31 +52,3 @@ class DataUtils:
         json_path = json_file_path
         json_path.write_text(json.dumps(data, default=str, indent=4))
 
-    def list_to_markdown(self, questions_list: list):
-        """
-        Convert a list of question-answer dictionaries to a formatted Markdown string.
-
-        Args:
-            questions_list (list): List of dictionaries containing 'question' and 'answer' keys
-
-        Returns:
-            str: Formatted Markdown string
-        """
-        markdown_text = "```\n"
-
-        for i, qa_pair in enumerate(questions_list, 1):
-            # Add question section
-            markdown_text += f"问题 {i}\n\n"
-            markdown_text += f"{qa_pair['question']}\n\n"
-
-            # Add answer section
-            markdown_text += f"回答 {i}\n\n"
-            markdown_text += f"{qa_pair['answer']}\n\n"
-
-            # Add separator between QA pairs except for the last one
-            if i < len(questions_list):
-                markdown_text += "---\n\n"
-
-        markdown_text += "\n```"
-
-        return markdown_text
