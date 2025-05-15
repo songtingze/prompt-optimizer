@@ -81,7 +81,7 @@ class PromptOptimizer:
         self.show_final_result(success, new_samples)
         return modification_all, anaysis_all, new_prompt, new_samples['answers'], success
 
-    # 循环优化过程 todo:初始接收问答对
+    # 循环优化过程
     def optimize_next(self, modification_all: str, anaysis_all: str, last_answer, last_prompt, qa_list):
         # self.round = current_round
         # 1.优化更新prompt(使用两个来源反馈+之前的最佳prompt和对应得到的示例答案)

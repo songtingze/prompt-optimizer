@@ -2,7 +2,7 @@ import re
 from typing import Any, List, Optional, Tuple, Dict
 import tiktoken
 from datetime import datetime
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import random
 from optimizer.prompts.prompt_pool import EVALUATE_PROMPT
 from utils.logger import logger
@@ -23,7 +23,7 @@ class EvaluationUtils:
 
     def execute_prompt(self, optimizer: Any, current_prompt, qa_list) -> dict:
         # _, _, qa, _ = load.load_meta_data()
-        qa = qa_list
+        # qa = qa_list
         # answers = []
         # 获取当前系统时间
         current_time = datetime.now()
@@ -32,20 +32,40 @@ class EvaluationUtils:
         time_string = current_time.strftime("%Y-%m-%d %H:%M:%S")
 
         # 同步版本的 fetch_answer 函数
-        def fetch_answer(q: str) -> Dict[str, Any]:
-            prompt = f"{current_prompt}当前时间为：{time_string}\n\n{q}"
+        # def fetch_answer(q: str) -> Dict[str, Any]:
+        #     prompt = f"{current_prompt}当前时间为：{time_string}\n\n{q}"
+        #     try:
+        #         answer, token_count = optimizer.execute_llm.generate_response(prompt)
+        #         return {"question": q, "answer": answer}
+        #     except Exception as e:
+        #         return {"question": q, "answer": str(e)}
+
+        def fetch_answer(index: int) -> Dict[str, Any]:
+            question = qa_list[index]["question"]
+            prompt = f"{current_prompt}当前时间为：{time_string}\n\n{question}"
             try:
                 answer, token_count = optimizer.execute_llm.generate_response(prompt)
-                return {"question": q, "answer": answer}
+                return {"index": index, "question": question, "answer": answer}
             except Exception as e:
-                return {"question": q, "answer": str(e)}
+                return {"index": index, "question": question, "answer": str(e)}
 
         # 提取所有问题
-        questions = [item["question"] for item in qa]
+        # questions = [item["question"] for item in qa]
+        # 提取所有问题的索引
+        indices = list(range(len(qa_list)))
 
         # 使用线程池并发执行 fetch_answer
+        # with ThreadPoolExecutor(max_workers=4) as executor:  # 可根据CPU核心数调整
+        #     answers = list(executor.map(fetch_answer, questions))
         with ThreadPoolExecutor(max_workers=4) as executor:  # 可根据CPU核心数调整
-            answers = list(executor.map(fetch_answer, questions))
+            futures = {executor.submit(fetch_answer, i): i for i in indices}
+            results = []
+            for future in as_completed(futures):
+                results.append(future.result())
+
+        # 按照原始qa_list的顺序收集结果
+        results.sort(key=lambda x: x["index"])
+        answers = [{"question": result["question"], "answer": result["answer"]} for result in results]
 
         # cur_round = optimizer.round
         new_data = {"answers": answers, "prompt": current_prompt}
@@ -70,27 +90,42 @@ class EvaluationUtils:
                                                                      new_samples=new_samples, qa_list=qa_list)
             succeed = True
         else:
-            evaluation_results = []
-            modify_results = []
-            analyse_results = []
+            # evaluation_results = []
+            # modify_results = []
+            # analyse_results = []
+            evaluation_results_dict = {}
+            modify_results_dict = {}
+            analyse_results_dict = {}
 
-            def run_sync_evaluate() -> Tuple[bool, Any, Any]:
-                return self._prompt_evaluate(optimizer, samples=samples, new_samples=new_samples, qa_list=qa_list)
+            # def run_sync_evaluate() -> Tuple[bool, Any, Any]:
+            #     return self._prompt_evaluate(optimizer, samples=samples, new_samples=new_samples, qa_list=qa_list)
+
+            def run_sync_evaluate(index: int) -> None:
+                success, modification, analysis = self._prompt_evaluate(optimizer, samples=samples,
+                                                                        new_samples=new_samples,
+                                                                        qa_list=[qa_list[index]])
+                evaluation_results_dict[index] = success
+                modify_results_dict[index] = modification
+                analyse_results_dict[index] = analysis
 
             # 使用线程池并发执行同步任务
             with ThreadPoolExecutor(max_workers=4) as executor:
-                all_results = list(executor.map(
-                    lambda _: run_sync_evaluate(),  # 使用 lambda 忽略参数
-                    [None] * EVALUATION_REPETITION
-                ))
+                futures = {executor.submit(run_sync_evaluate, i): i for i in range(len(qa_list))}
+                for future in as_completed(futures):
+                    index = futures[future]
 
-            # 拆分所有结果为三个部分
-            succeeds, modifications, analyse_all = zip(*all_results)
+            # 按照原始qa_list的顺序收集结果
+            evaluation_results = [evaluation_results_dict[i] for i in range(len(qa_list))]
+            modify_results = [modify_results_dict[i] for i in range(len(qa_list))]
+            analyse_results = [analyse_results_dict[i] for i in range(len(qa_list))]
+
+            # # 拆分所有结果为三个部分
+            # succeeds, modifications, analyse_all = zip(*all_results)
 
             # 合并到主列表中
-            evaluation_results.extend(succeeds)
-            modify_results.extend(modifications)
-            analyse_results.extend(analyse_all)
+            # evaluation_results.extend(succeeds)
+            # modify_results.extend(modifications)
+            # analyse_results.extend(analyse_all)
 
             # 输出调试信息
             logger.info(f"Evaluation Results: {evaluation_results}")
@@ -126,7 +161,6 @@ class EvaluationUtils:
 
         return succeed, modification_all, analyse_all
 
-    # todo:修改从模板读
     def _prompt_evaluate(self, optimizer, samples, new_samples, qa_list):
         # _, requirement, qa, _ = load.load_meta_data()
         qa = qa_list

@@ -1,7 +1,8 @@
+import json
 from typing import Tuple
-
+from utils.logger import logger
 from openai import OpenAI
-
+import requests
 
 class LLM:
     """
@@ -52,57 +53,27 @@ class LLM:
             return "", 0
 
 
-    def generate_response_stream(self, messages: list) -> Tuple[str, int]:
-        """
-        调用大模型，生成流式结果
-        :param messages:
-        :return:
-        """
+    # 适用测试环境的行内大模型接口
+    def request_ry_llm(self, prompt_text, model_name, chat_id, variable_text = "", prod=False):
+        if prod:
+            url = "xxxxxxxxxxxxxxxx"
+        else:
+            url = ""
+
+        request_data = {
+            "txHeader":{},
+            "txBody":{
+
+            }
+        }
+        headers = {
+            "Content-type":"application/json"
+        }
         try:
-            completion = self.client.chat.completions.create(
-                model=self.model_name,
-                messages=messages,
-                stream=True,
-                stream_options={"include_usage": True},
-                # extra_body={"enable_thinking": True},
-            )
-
-            response = ""
-            total_tokens = 0
-            for chunk in completion:
-                if len(chunk.choices) > 0 and chunk.choices[0].finish_reason != "stop":
-                    content = chunk.choices[0].delta.content
-                    response += content
-                    print(content, end='', flush=True)  # 流式打印
-                elif "usage" in chunk and chunk.usage:
-                    total_tokens = chunk.usage.total_tokens
-
-            return response, total_tokens
+            ret = requests.post(url, json=request_data, headers=headers)
+            response_json = json.load(ret.text)
+            response_text = response_json["txBody"]["txEntity"]["choices"][0]["message"]["content"]
+            logger.info("大模型接口返回:%s",response_json)
         except Exception as e:
-            print(f"Error generating response: {e}")
-            return "", 0
-
-    def generate_response_test_connect(self) -> tuple[bool, str]:
-        """
-        调用大模型，生成非流式结果
-        :param messages:
-        :return:
-        """
-        try:
-            response = self.client.chat.completions.create(
-                model=self.model_name,
-                # 此处以qwen-plus为例，可按需更换模型名称。模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
-                messages=
-                [
-                    {'role': 'system', 'content': "ping"}
-                ],
-                max_tokens=1
-            )
-            msg = ""
-            if response.choices[0].message.content:
-                return True, msg
-            else:
-                return False, response.error_message
-        except Exception as e:
-            print(f"Error generating response: {e}")
-            return False, str(e)
+            logger.error(f"A LLM error occurred:{e}")
+        return response_text
