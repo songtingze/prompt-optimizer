@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 # from config import config
 from models.discriminative_task import ResponseWrapper
 from utils.logger import TraceID, logger
-from router import discriminative_task_router
+from router import discriminative_task_router, generative_task_router
 
 app = FastAPI(
     title="Prompt Optimizer API",
@@ -63,7 +63,7 @@ async def request_received(request, call_next):
 
 
 app.include_router(discriminative_task_router)
-
+app.include_router(generative_task_router)
 
 def start():
     import uvicorn

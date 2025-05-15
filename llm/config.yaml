@@ -1,0 +1,18 @@
+llm:
+  api_type: "dashscope"
+  model: "deepseek-r1-distill-qwen-32b"
+  base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+  api_key: "sk-3xxxxxxxxx"
+
+models:
+  qwen-plus:
+    model: "qwen-plus"
+    api_key: "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+
+  deepseek-r1:
+    api_type: "dashscope"
+    api_key: "sk-xxxxxxxxxxx5"
+    base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+
+
